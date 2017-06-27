@@ -1,4 +1,4 @@
-![cossmic header](https://github.com/isc-konstanz/household_data/blob/master/img/CoSSMic-header.png)
+![cossmic header](https://github.com/isc-konstanz/household_data/blob/master/img/CoSSMic_header.png)
 
 # Household data package
 
@@ -25,5 +25,5 @@ This notebook as well as all other documents in this repository is published und
 
 ![ISC logo](https://github.com/isc-konstanz/household_data/blob/master/img/ISC_logo.png)
 
-- [**ISC**](http://isc-konstanz.de/) Konstanz (International Solar Energy Research Center)
+- [**ISC** Konstanz](http://isc-konstanz.de/) (International Solar Energy Research Center)
 - **Adian Minde**: adrian.minde@isc-konstanz.de
