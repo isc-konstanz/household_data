@@ -19,7 +19,7 @@ To work on the Notebooks locally see the installation instructions in the
 
 ## License
 
-This notebook as well as all other documents in this repository is published under the [MIT License](LICENSE.md).
+This notebook as well as all other documents in this repository is published under the [MIT License](LICENSE).
 
 
 ## Contact
