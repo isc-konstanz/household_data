@@ -106,7 +106,7 @@ ENV/
 .mypy_cache/
 
 # Downloaded data
-original_data
+original_data*
 
 # Processed data
 *.csv
