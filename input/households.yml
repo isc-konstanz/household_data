@@ -10,7 +10,7 @@ Residential 4:
     project: 'CoSSMic'
     region: 'Konstanz, Germany'
     type: 'Residential house'
-    dir: residential_004
+    dir: 'residential_004'
     feeds:
         grid_import: 25
         grid_export: 22
@@ -21,4 +21,15 @@ Residential 4:
         washing_machine: 56
         refrigerator: 65
         freezer: 59
-    selfconsumption: 'true'
+    adjustments:
+        refrigerator:
+            - '2015-11-2 21:01:49'
+            - '2015-11-26 11:34:12'
+            - '2015-11-26 18:21:06'
+            - '2016-05-11 20:32:33'
+    resolutions:
+        - resolution: 3min
+          start: '2015-10-04 01:39:00'
+          end: '2016-09-06 15:03:00'
+        - resolution: 1min
+          start: '2016-09-06 15:04:00'
