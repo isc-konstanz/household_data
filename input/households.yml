@@ -6,7 +6,7 @@
 # households.yml : Parameters specifying all households to be processed
 #
 
-Residential 4:
+Residential4:
     project: 'CoSSMic'
     region: 'Konstanz, Germany'
     type: 'Residential house'
@@ -28,8 +28,10 @@ Residential 4:
             - '2015-11-26 18:21:06'
             - '2016-05-11 20:32:33'
     resolutions:
-        - resolution: 3min
+        - key: 3min
+          seconds: 180
           start: '2015-10-04 01:39:00'
           end: '2016-09-06 15:03:00'
-        - resolution: 1min
+        - key: 1min
+          seconds: 60
           start: '2016-09-06 15:04:00'

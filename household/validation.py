@@ -21,23 +21,24 @@ logger = logging.getLogger('log')
 logger.setLevel('INFO')
 
 
-def validate(household_name, household_key, feeds, adjustments, household, output=False):
+def validate(df, household_name, feeds, adjustments, headers, output=False):
     '''
     Search for measurement faults in several data series of a DataFrame and remove them
 
     Parameters
     ----------
+    df : pandas.DataFrame
+        DataFrame to inspect and possibly fix measurement errors
     household_name : str
         Name of the Household to indicate progress
-    household_key : str
-        Key of the Household to take specific actions depending
         on the households history and error susceptibility, if necessary
     feeds : dict of int
         Subset of feed ids, available for the Household
     adjustments : dict of datetime
         Subset of feed adjustment indicators, available for the Household
-    household : pandas.DataFrame
-        DataFrame to inspect and possibly fix measurement errors
+    headers : list
+        List of strings indicating the level names of the pandas.MultiIndex
+        for the columns of the dataframe
     output : boolean
         Flag, if the validated feeds should be printed as human readable CSV files
 
@@ -51,16 +52,16 @@ def validate(household_name, household_key, feeds, adjustments, household, outpu
 
     logger.info('Validate %s - feeds', household_name)
 
-    feeds_existing = len(household.columns)
+    feeds_existing = len(df.columns)
     feeds_success = 0
 
     for feed_name in feeds.keys():
-        feed = household.loc[:, household.columns.get_level_values('feed')==feed_name].dropna()
+        feed = df.loc[:, df.columns.get_level_values('feed')==feed_name].dropna()
 
         # Take specific actions, depending on one-time occurrences for the specific feed
         if adjustments is not None and feed_name in adjustments.keys():
             for time in adjustments[feed_name]:
-                logger.debug("Adjust energy counter value at %s for %s: %s", time.strftime('%d.%m.%Y %H:%M:%S'), household_name, feed_name)
+                logger.debug("Adjust energy counter value at %s for %s: %s", time, household_name, feed_name)
                 
                 feed = _feed_adjustment(time, feed)
 
@@ -103,7 +104,7 @@ def validate(household_name, household_key, feeds, adjustments, household, outpu
         if output:
             feed_csv = derive_power(feed)
             feed_csv[feed_name+'_error'] = error.replace(False, np.NaN)
-            feed_csv.to_csv(household_key+'_'+feed_name+'.csv', sep=';', decimal=',', encoding='utf-8')
+            feed_csv.to_csv(household_name.lower()+'_'+feed_name+'.csv', sep=';', decimal=',', encoding='utf-8')
 
         if np.count_nonzero(error) > 0:
             feed = feed[~error]
@@ -117,6 +118,8 @@ def validate(household_name, household_key, feeds, adjustments, household, outpu
 
         feeds_success += 1
         update_progress(feeds_success, feeds_existing)
+
+    fixed.columns.names = headers
 
     return fixed
 
