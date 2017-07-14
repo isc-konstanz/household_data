@@ -8,8 +8,8 @@
 
 Residential4:
     project: 'CoSSMic'
-    region: 'Konstanz, Germany'
-    type: 'Residential house'
+    region: 'DE_konstanz'
+    type: 'residential_4-person_suburb_building'
     dir: 'residential_004'
     feeds:
         grid_import: 25
