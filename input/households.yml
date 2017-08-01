@@ -6,27 +6,43 @@
 # households.yml : Parameters specifying all households to be processed
 #
 
-Residential4:
-    project: 'CoSSMic'
-    region: 'DE_konstanz'
-    type: 'residential_4-person_suburb_building'
-    dir: 'residential_004'
+Residential 4:
+    dir: 'DE_KN_residential_004'
+    region: 'DE_KN'
+    type: 'residential_building_suburb'
     feeds:
-        grid_import: 25
-        grid_export: 22
-        pv: 34
-        ev: 53
-        heat_pump: 49
-        dishwasher: 62
-        washing_machine: 56
-        refrigerator: 65
-        freezer: 59
-    adjustments:
+        grid_import:
+            id: 25
+            unit: 'kWh'
+        grid_export:
+            id: 22
+            unit: 'kWh'
+        pv:
+            id: 34
+            unit: 'kWh'
+        ev:
+            id: 53
+            unit: 'kWh'
+        heat_pump:
+            id: 49
+            unit: 'kWh'
+        dishwasher:
+            id: 62
+            unit: 'kWh'
+        washing_machine:
+            id: 56
+            unit: 'kWh'
         refrigerator:
-            - '2015-11-2 21:01:49'
-            - '2015-11-26 11:34:12'
-            - '2015-11-26 18:21:06'
-            - '2016-05-11 20:32:33'
+            id: 65
+            unit: 'kWh'
+            adjustments:
+                - '2015-11-2 21:01:49'
+                - '2015-11-26 11:34:12'
+                - '2015-11-26 18:21:06'
+                - '2016-05-11 20:32:33'
+        freezer:
+            id: 59
+            unit: 'kWh'
     resolutions:
         - key: 3min
           seconds: 180

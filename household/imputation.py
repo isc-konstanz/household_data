@@ -118,7 +118,7 @@ def find_nan(df, headers, resolution, patch=False):
         col = col.to_frame()
 
         col_name_str = next(iter([level for level in col_name if level in df.columns.get_level_values('region')] or []), None) + '_' + \
-                        next(iter([level for level in col_name if level in df.columns.get_level_values('household')] or []), None).lower() + '_' + \
+                        next(iter([level for level in col_name if level in df.columns.get_level_values('household')] or []), None).replace(' ', '').lower() + '_' + \
                         next(iter([level for level in col_name if level in df.columns.get_level_values('feed')] or []), None)
 
         # skip this column if it has no entries at all

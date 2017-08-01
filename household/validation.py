@@ -21,7 +21,7 @@ logger = logging.getLogger('log')
 logger.setLevel('INFO')
 
 
-def validate(df, household_name, feeds, adjustments, headers, output=False):
+def validate(df, household_name, feeds, headers, output=False):
     '''
     Search for measurement faults in several data series of a DataFrame and remove them
 
@@ -34,8 +34,6 @@ def validate(df, household_name, feeds, adjustments, headers, output=False):
         on the households history and error susceptibility, if necessary
     feeds : dict of int
         Subset of feed ids, available for the Household
-    adjustments : dict of datetime
-        Subset of feed adjustment indicators, available for the Household
     headers : list
         List of strings indicating the level names of the pandas.MultiIndex
         for the columns of the dataframe
@@ -55,12 +53,12 @@ def validate(df, household_name, feeds, adjustments, headers, output=False):
     feeds_existing = len(df.columns)
     feeds_success = 0
 
-    for feed_name in feeds.keys():
+    for feed_name, feed_dict in feeds.items():
         feed = df.loc[:, df.columns.get_level_values('feed')==feed_name].dropna()
 
         # Take specific actions, depending on one-time occurrences for the specific feed
-        if adjustments is not None and feed_name in adjustments.keys():
-            for time in adjustments[feed_name]:
+        if 'adjustments' in feed_dict.keys():
+            for time in feed_dict['adjustments']:
                 logger.debug("Adjust energy counter value at %s for %s: %s", time, household_name, feed_name)
                 
                 feed = _feed_adjustment(time, feed)

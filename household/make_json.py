@@ -13,9 +13,9 @@ import yaml
 # General metadata
 
 metadata_head = '''
-name: opsd_household_data
-
 title: Household Data
+
+name: opsd_household_data
 
 description: Detailed household load and solar in minutely to hourly resolution
 
@@ -55,12 +55,11 @@ contributors:
     - web: http://isc-konstanz.de/
       name: Adrian Minde
       email: adrian.minde@isc-konstanz.de
-'''
 
-source_template = '''
-- project: {project}
-  web: {web}
-  type: {type}
+sources:
+    - web: http://cossmic.eu/
+      name: CoSSMic
+      source: Collaborating Smart Solar-powered Microgrids - European funded research consortium
 '''
 
 resource_template = '''
@@ -105,51 +104,45 @@ schemas_template = '''
         format: fmt:%Y-%m-%dT%H%M%S%z
       - name: {marker}
         description: marker to indicate which columns are missing data in source data
-            and has been interpolated (e.g. DE_transnetbw_solar_generation;)
+            and has been interpolated (e.g. DE_KN_Residential1_grid_import;)
         type: string
 '''
 
 field_template = '''
-      - name: {household}_{feed}
+      - name: {region}_{household}_{feed}
         description: {description}
         type: number (float)
-        source:
-            project: {project}
-            web: {web}
-            type: {type}
+        unit: {unit}
         opsd-properties: 
-            Region: "{region}"
-            Household: {household}
+            Region: {region_desc}
+            Type: {type}
+            Household: {number}
             Feed: {feed}
 '''
 
-web_template = '''
-CoSSMic: http://cossmic.eu/
-'''
-
 region_template = '''
-DE_konstanz: Germany, Konstanz
+DE_KN: Germany, Konstanz
 '''
 
 type_template = '''
-residential_4-person_suburb_building: Residential building, located in the suburban area in a four-person household
+residential_building_suburb: residential building, located in the suburban area
 '''
 
 descriptions_template = '''
-grid_import: Energy imported from the public grid in kWh
-grid_export: Energy exported to the public grid in kWh
-consumption: Total household energy consumption in kWh
-pv: Total Photovoltaic energy generation in kWh
-ev: Electric Vehicle charging energy in kWh
-storage_charge: Battery charging energy in kWh
-storage_discharge: Battery discharged energy in kWh
-heat_pump: Heat pump energy consumption in kWh
-circulation_pump: Circulation pump energy consumption, circulating the heated water of e.g. boilers in kWh
-dishwasher: Dishwasher energy consumption in kWh
-washing_machine: Washing machine energy consumption in kWh
-refrigerator: Refridgerator energy consumption in kWh
-freezer: Freezer energy consumption in kWh
-default: Energy in kWh
+grid_import: Energy imported from the public grid in a {type} in {unit}
+grid_export: Energy exported to the public grid in a {type} in {unit}
+consumption: Total household energy consumption in a {type} in {unit}
+pv: Total Photovoltaic energy generation in a {type} in {unit}
+ev: Electric Vehicle charging energy in a {type} in {unit}
+storage_charge: Battery charging energy in a {type} in {unit}
+storage_discharge: Battery discharged energy in a {type} in {unit}
+heat_pump: Heat pump energy consumption in a {type} in {unit}
+circulation_pump: Circulation pump energy consumption in a {type} in {unit}
+dishwasher: Dishwasher energy consumption in a {type} in {unit}
+washing_machine: Washing machine energy consumption in a {type} in {unit}
+refrigerator: Refridgerator energy consumption in a {type} in {unit}
+freezer: Freezer energy consumption in a {type} in {unit}
+default: Energy in {unit}
 '''
 
 # Dataset-specific metadata
@@ -196,9 +189,8 @@ def make_json(data_sets, info_cols, version, changes, headers):
     resource_list = '''
 - mediatype: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
   format: xlsx
-  path: time_series.xlsx
+  path: household_data.xlsx
 '''
-    source_list = ''  # list of sources were data comes from in YAML-format
     schemas_dict = ''  # dictionary of schemas in YAML-format
 
     for res_key, df in data_sets.items():
@@ -215,38 +207,31 @@ def make_json(data_sets, info_cols, version, changes, headers):
                 continue
             h = {k: v for k, v in zip(headers, col)}
             
-            websites = yaml.load(web_template)
-            h['web'] = websites[h['project']]
+            regions = yaml.load(region_template)
+            h['region_desc'] = regions[h['region']]
             
             regions = yaml.load(region_template)
-            h['region'] = regions[h['region']]
+            h['number'] = ''.join(i for i in h['household'] if i.isdigit())
             
             types = yaml.load(type_template)
             h['type'] = types[h['type']]
             
-            descriptions = yaml.load(descriptions_template)
+            descriptions = yaml.load(
+                descriptions_template.format(
+                    type=h['type'], unit=h['unit']))
             try:
                 h['description'] = descriptions[h['feed']]
             except KeyError:
                 h['description'] = descriptions['default']
             
             field_list = field_list + field_template.format(**h)
-            source_list = source_list + source_template.format(**h)
         
         schemas_dict = schemas_dict + schemas_template.format(
             res_key=res_key, **info_cols) + field_list
 
-    # Remove duplicates from sources_list. set() returns unique values from a
-    # collection, but it cannot compare dicts. Since source_list is a list of of
-    # dicts, this requires some juggling with data types
-    source_list = [dict(tupleized)
-                   for tupleized in set(tuple(entry.items())
-                                        for entry in yaml.load(source_list))]
-
     # Parse the YAML-Strings and stitch the building blocks together
     metadata = yaml.load(metadata_head.format(
         version=version, changes=changes))
-    metadata['sources'] = source_list
     metadata['resources'] = yaml.load(resource_list)
     metadata['schemas'] = yaml.load(schemas_dict)
 

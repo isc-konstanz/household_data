@@ -22,25 +22,23 @@ logger = logging.getLogger('log')
 logger.setLevel('INFO')
 
 
-def read(household_name, dir_name, feeds, project, household_region, household_type, headers, 
+def read(household_name, dir_name, household_region, household_type, feeds, headers, 
          start_from_user=None, end_from_user=None):
     """
     For the households specified in the households.yml file, read 
 
     Parameters
     ----------
-    feeds : dict of int
-        Indicator for subset of feed ids, available for the Household
-    dir_name : str
-        directory path to the location of the Households MySQL data
     household_name : str
         Name of the Household to be placed in the column-MultiIndex
-    project : str
-        Project name of the Household to be placed in the column-MultiIndex
+    dir_name : str
+        directory path to the location of the Households MySQL data
     household_region : str
         Region of the Household to be placed in the column-MultiIndex
     household_type : str
         Type of the Household to be placed in the column-MultiIndex
+    feeds : dict of key value pairs
+        Indicator for subset of feed ids, available for the Household
     headers : list
         List of strings indicating the level names of the pandas.MultiIndex
         for the columns of the dataframe
@@ -58,6 +56,7 @@ def read(household_name, dir_name, feeds, project, household_region, household_t
     data_set = pd.DataFrame()
     columns_map = {}
 
+    household_id = household_name.replace(' ', '').lower()
     feeds_dir = os.path.join('original_data', dir_name, 'phptimeseries')
 
     logger.info('Reading %s - feeds', household_name)
@@ -72,7 +71,9 @@ def read(household_name, dir_name, feeds, project, household_region, household_t
         return data_set
 
     # For each specified feed, read the MySQL file
-    for feed_name, feed_id in feeds.items():
+    for feed_name, feed_dict in feeds.items():
+        feed_id = feed_dict['id']
+        feed_unit = feed_dict['unit']
 
         filepath = os.path.join(feeds_dir, 'feed_'+str(feed_id)+'.MYD')
 
@@ -90,10 +91,10 @@ def read(household_name, dir_name, feeds, project, household_region, household_t
             data_to_add = read_feed(filepath, feed_name)
 
             columns_map[feed_name] = {
-                'project': project,
                 'region': household_region,
-                'household': household_name,
+                'household': household_id,
                 'type': household_type,
+                'unit': feed_unit,
                 'feed': feed_name
             }
 
