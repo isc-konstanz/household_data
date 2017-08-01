@@ -114,9 +114,9 @@ field_template = '''
         type: number (float)
         unit: {unit}
         opsd-properties: 
-            Region: {region_desc}
+            Region: {region}
             Type: {type}
-            Household: {number}
+            Household: {household}
             Feed: {feed}
 '''
 
@@ -207,18 +207,14 @@ def make_json(data_sets, info_cols, version, changes, headers):
                 continue
             h = {k: v for k, v in zip(headers, col)}
             
-            regions = yaml.load(region_template)
-            h['region_desc'] = regions[h['region']]
-            
-            regions = yaml.load(region_template)
-            h['number'] = ''.join(i for i in h['household'] if i.isdigit())
+#             regions = yaml.load(region_template)
+#             h['region_desc'] = regions[h['region']
             
             types = yaml.load(type_template)
-            h['type'] = types[h['type']]
             
             descriptions = yaml.load(
                 descriptions_template.format(
-                    type=h['type'], unit=h['unit']))
+                    type=types[h['type']], unit=h['unit']))
             try:
                 h['description'] = descriptions[h['feed']]
             except KeyError:
