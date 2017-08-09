@@ -19,20 +19,21 @@ name: opsd_household_data
 
 description: Detailed household load and solar in minutely to hourly resolution
 
-long_description: This data package contains different kinds of timeseries
-    data relevant for power system modelling, namely electricity consumption 
-    (load) as well as solar power generation for several small businesses and 
-    private households, in a resolution up to single device consumptions.
-    The timeseries become available at different points in time depending on the
-    sources. The data has been downloaded from the sources, resampled and merged in
-    large CSV files with minutely to hourly resolution. Most measurements were done
-    initially in 3 minute intervals, to later on minutely intervals. To improve the
-    datas classifyability, additional 15- and 60-minute interval files are provided.
-    All data processing is conducted in python and pandas and has been documented in 
-    the Jupyter notebooks linked below.
+long_description: This data package contains measured time series data for several small businesses 
+    and private households relevant for household- or low-voltage-level power system modeling. 
+    The data includes solar power generation as well as electricity consumption (load) in a resolution 
+    up to single device consumption. The starting point for the time series, as well as data quality, 
+    varies between households, with gaps spanning from a few minutes to entire hours. In general, 
+    data is adjusted to fit uniform, regular time intervals without changing its validity.  Except for small 
+    gaps, filled using linear interpolation. The numbers are cumulative power consumption/generation over time. 
+    Hence overall energy consumption/generation is retained in case of data gaps. Measurements were initially 
+    conducted in 3-minute intervals, later in 1-minute intervals. Data for both measurement resolutions are 
+    published separately in large CSV files. Additionally, data in 15 and 60-minute resolution is provided 
+    for compatibility with other time series data. Data processing is conducted in 
+    Jupyter Notebooks/Python/pandas.
 
 documentation:
-    https://github.com/isc-konstanz/household_data/blob/master/main.ipynb
+    https://github.com/isc-konstanz/household_data/blob/{version}/main.ipynb
 
 version: '{version}'
 
@@ -49,8 +50,6 @@ keywords:
     - solar
     - power consumption
 
-geographical-scope: Southern Germany
-
 contributors:
     - web: http://isc-konstanz.de/
       name: Adrian Minde
@@ -61,6 +60,8 @@ sources:
       name: CoSSMic
       source: Collaborating Smart Solar-powered Microgrids - European funded research consortium
 '''
+
+scope_template = '{number} households in southern Germany'
 
 resource_template = '''
 - path: household_data_{res_key}_singleindex.csv
@@ -138,10 +139,15 @@ storage_charge: Battery charging energy in a {type} in {unit}
 storage_discharge: Battery discharged energy in a {type} in {unit}
 heat_pump: Heat pump energy consumption in a {type} in {unit}
 circulation_pump: Circulation pump energy consumption in a {type} in {unit}
+air_conditioning: Air conditioning energy consumption in a {type} in {unit}
+ventilation: Ventilation energy consumption in a {type} in {unit}
 dishwasher: Dishwasher energy consumption in a {type} in {unit}
 washing_machine: Washing machine energy consumption in a {type} in {unit}
-refrigerator: Refridgerator energy consumption in a {type} in {unit}
+refrigerator: Refrigerator energy consumption in a {type} in {unit}
 freezer: Freezer energy consumption in a {type} in {unit}
+cooling_aggregate: Cooling aggregate energy consumption in a {type} in {unit}
+facility: Energy consumption of an industrial- or research-facility in a {type} in {unit}
+area: Energy consumption of an area, consisting of several smaller loads, in a {type} in {unit}
 default: Energy in {unit}
 '''
 
@@ -191,6 +197,7 @@ def make_json(data_sets, info_cols, version, changes, headers):
   format: xlsx
   path: household_data.xlsx
 '''
+    regions_list = [] # list of geographical scopes and households
     schemas_dict = ''  # dictionary of schemas in YAML-format
 
     for res_key, df in data_sets.items():
@@ -206,6 +213,10 @@ def make_json(data_sets, info_cols, version, changes, headers):
             if col[0] in info_cols.values():
                 continue
             h = {k: v for k, v in zip(headers, col)}
+            
+            region = h['region'] + '_' + h['household']
+            if region not in regions_list:
+                regions_list.append(region)
             
 #             regions = yaml.load(region_template)
 #             h['region_desc'] = regions[h['region']
@@ -228,6 +239,8 @@ def make_json(data_sets, info_cols, version, changes, headers):
     # Parse the YAML-Strings and stitch the building blocks together
     metadata = yaml.load(metadata_head.format(
         version=version, changes=changes))
+    
+    metadata['geographical-scope'] = scope_template.format(number=len(regions_list));
     metadata['resources'] = yaml.load(resource_list)
     metadata['schemas'] = yaml.load(schemas_dict)
 

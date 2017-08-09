@@ -50,13 +50,13 @@ def download(out_path, version=None):
         logger.info('%s already exists. Delete it if you want to download again',
                     filepath)
 
-        myzipfile = zipfile.ZipFile(filepath)
-        if myzipfile.namelist()[0] == 'original_data/':
-            myzipfile.extractall()
-            logger.info('Extracted data to %s.', os.path.join(out_path, 'original_data'))
-        else:
-            logger.warning('%s has unexpected content. Please check manually',
-                           filepath)
+    myzipfile = zipfile.ZipFile(filepath)
+    if myzipfile.namelist()[0] == 'original_data/':
+        myzipfile.extractall()
+        logger.info('Extracted data to %s.', os.path.join(out_path, 'original_data'))
+    else:
+        logger.warning('%s has unexpected content. Please check manually',
+                       filepath)
 
     return
 
