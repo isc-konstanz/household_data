@@ -17,7 +17,7 @@ title: Household Data
 
 name: opsd_household_data
 
-description: Detailed household load and solar in minutely to hourly resolution
+description: Detailed household load and solar generation in minutely to hourly resolution
 
 long_description: This data package contains measured time series data for several small businesses 
     and private households relevant for household- or low-voltage-level power system modeling. 
@@ -59,6 +59,15 @@ sources:
     - web: http://cossmic.eu/
       name: CoSSMic
       source: Collaborating Smart Solar-powered Microgrids - European funded research consortium
+      
+licenses:
+    - id: CC-BY-4.0
+      version: '4.0'
+      name: Creative Commons Attribution-International
+      url: https://creativecommons.org/licenses/by/4.0/
+
+external: true
+
 '''
 
 scope_template = '{number} households in southern Germany'
