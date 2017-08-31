@@ -100,8 +100,20 @@ def validate(df, household_name, feeds, headers, output=False):
 
         error = error_std | error_inc
         if output:
-            feed_csv = derive_power(feed)
-            feed_csv[feed_name+'_error'] = error.replace(False, np.NaN)
+            feed_csv_error = feed.copy()
+            feed_csv_error[feed_name+'_error'] = error.replace(False, np.NaN)
+            
+            feed_csv = derive_power(feed[~error])
+            feed_csv["Power [kW]"] = feed_csv["Power [kW]"].replace(0,np.NaN)
+            med = feed_csv["Power [kW]"].median()
+            factor = 100
+            for timestamp, data in feed_csv["Power [kW]"].items():
+                if abs(data) > factor * med:
+                    pd.options.mode.chained_assignment = None  # default='warn
+                    feed_csv_error[feed_name+'_error'][timestamp] = np.NaN
+                    logger.info("Probably invalid data in feed %s (> %d x median of %f): %f at %s", feed_name, factor, med, data, timestamp)
+            
+            feed_csv_error.to_csv(household_name.lower()+'_'+feed_name+'_error.csv', sep=';', decimal=',', encoding='utf-8')
             feed_csv.to_csv(household_name.lower()+'_'+feed_name+'.csv', sep=';', decimal=',', encoding='utf-8')
 
         if np.count_nonzero(error) > 0:
