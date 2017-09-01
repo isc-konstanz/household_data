@@ -58,19 +58,16 @@ def derive_power(feed):
     Returns
     ----------
     fixed: pandas.DataFrame
-        DataFrame with both energy and power series of the feed
+        DataFrame with the power series of the feed
 
     '''
 
     index_delta = pd.Series(feed.index, index=feed.index)
     index_delta = (index_delta - index_delta.shift(1))/np.timedelta64(1, 'h')
-    index_delta.name = 'Time passed [min]'
-
     feed_energy = feed.iloc[:,0].astype('float64')
-    feed_energy.name = 'Energy [kWh]'
+    
+    feed_power = pd.DataFrame((feed_energy - feed_energy.shift(1))/index_delta, index=feed.index)
+    feed_power.columns = ["Power [kW]"]
 
-    feed_power = (feed_energy - feed_energy.shift(1))/index_delta
-    feed_power.name = 'Power [kW]'
-
-    return pd.concat([index_delta*60, feed_energy, feed_power], axis=1)
+    return feed_power
 

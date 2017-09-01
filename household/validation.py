@@ -58,73 +58,80 @@ def validate(df, household_name, feeds, headers, output=False):
 
         # Take specific actions, depending on one-time occurrences for the specific feed
         if 'adjustments' in feed_dict.keys():
-            for time in feed_dict['adjustments']:
-                logger.debug("Adjust energy counter value at %s for %s: %s", time, household_name, feed_name)
+            for adjustment in feed_dict['adjustments']:
+                logger.debug("Adjust energy values at %s for %s: %s", adjustment['start'], household_name, feed_name)
                 
-                feed = _feed_adjustment(time, feed)
+                feed = _feed_adjustment(adjustment, feed)
 
-        # Keep only the rows where the energy values are within +3 to -3 standard deviation.
+        # Keep only the rows where the energy values are within +3 to -3 times the standard deviation.
         error_std = np.abs(feed - feed.mean()) > 3*feed.std()
 
         if np.count_nonzero(error_std) > 0:
             logger.debug("Dropped %s rows outside 3 times the standard deviation for %s: %s", str(np.count_nonzero(error_std)), household_name, feed_name)
 
         # Keep only the rows where the energy values is increasing
-        error_inc = feed[~error_std] < feed[~error_std].shift(1)
+        feed_fixed = feed[~error_std]
+        error_inc = feed_fixed < feed_fixed.shift(1)
 
-        feed_size = len(feed.index)
+        feed_size = len(feed_fixed.index)
         for time in error_inc.replace(False, np.NaN).dropna().index:
-            i = feed.index.get_loc(time)
+            i = feed_fixed.index.get_loc(time)
             if i > 2 and i < feed_size:
                 # If a rounding or transmission error results in a single value being too big,
                 # flag that single data point, else flag all decreasing values
-                if feed.iloc[i,0] >= feed.iloc[i-2,0] and not error_inc.iloc[i-2,0]:
-                        error_inc.iloc[i,0] = False
-                        error_inc.iloc[i-1,0] = True
+                if feed_fixed.iloc[i,0] >= feed_fixed.iloc[i-2,0] and not error_inc.iloc[i-2,0]:
+                    error_inc.iloc[i,0] = False
+                    error_inc.iloc[i-1,0] = True
                 else:
                     error_flag = None
                     
                     j = i+1
-                    while j < feed_size and feed.iloc[i-1,0] > feed.iloc[j,0]:
+                    while j < feed_size and feed_fixed.iloc[i-1,0] > feed_fixed.iloc[j,0]:
                         if error_flag is None and j-i > 10:
-                            error_flag = feed.index[j-10]
+                            error_flag = feed_fixed.index[j-10]
                         
                         error_inc.iloc[j,0] = True
                         j = j+1
                     
                     if error_flag is not None:
-                        logger.debug('Unusual behaviour at index %s for %s: %s', error_flag.strftime('%d.%m.%Y %H:%M'), household_name, feed_name)
+                        logger.warn('Unusual behaviour at index %s for %s: %s', error_flag.strftime('%d.%m.%Y %H:%M'), household_name, feed_name)
 
         if np.count_nonzero(error_inc) > 0:
             logger.debug("Dropped %s rows with decreasing energy for %s: %s", str(np.count_nonzero(error_inc)), household_name, feed_name)
 
         error = error_std | error_inc
-        if output:
-            feed_csv_error = feed.copy()
-            feed_csv_error[feed_name+'_error'] = error.replace(False, np.NaN)
-            
-            feed_csv = derive_power(feed[~error])
-            feed_csv["Power [kW]"] = feed_csv["Power [kW]"].replace(0,np.NaN)
-            med = feed_csv["Power [kW]"].median()
-            factor = 100
-            for timestamp, data in feed_csv["Power [kW]"].items():
-                if abs(data) > factor * med:
-                    pd.options.mode.chained_assignment = None  # default='warn
-                    feed_csv_error[feed_name+'_error'][timestamp] = np.NaN
-                    logger.info("Probably invalid data in feed %s (> %d x median of %f): %f at %s", feed_name, factor, med, data, timestamp)
-            
-            feed_csv_error.to_csv(household_name.lower()+'_'+feed_name+'_error.csv', sep=';', decimal=',', encoding='utf-8')
-            feed_csv.to_csv(household_name.lower()+'_'+feed_name+'.csv', sep=';', decimal=',', encoding='utf-8')
-
+        feed_fixed = feed[~error]
+        
+        # Keep only the rows where the derived power is not significantly larger than the median value
+        feed_power = derive_power(feed_fixed)
+        
+        factor = 30
+        median = feed_power.replace(0, np.NaN).dropna().median()
+        error_med = pd.DataFrame(feed_power.abs().gt(factor*median)).shift(-1).fillna(False)
+        error_med.columns = error.columns
+        
+        if np.count_nonzero(error_med) > 0:
+            logger.debug("Dropped %s rows with %i times larger power than the median %f for %s: %s", str(np.count_nonzero(error_med)), factor, median, household_name, feed_name)
+        
+        error = error | error_med
         if np.count_nonzero(error) > 0:
-            feed = feed[~error]
+            feed_fixed = feed[~error.astype(bool)]
 
-        feed -= feed.dropna().iloc[0,0]
+        # Always begin with an energy value of 0
+        feed_fixed -= feed_fixed.dropna().iloc[0,0]
 
         if fixed.empty:
-            fixed = feed
+            fixed = feed_fixed
         else:
-            fixed = fixed.combine_first(feed)
+            fixed = fixed.combine_first(feed_fixed)
+            
+        if output:
+            feed.columns = ["Energy [kWh]"]
+            feed_csv = pd.concat([feed, feed_power], axis=1)
+            feed_csv[feed_name+'_error_std'] = error_std.replace(False, np.NaN)
+            feed_csv[feed_name+'_error_inc'] = error_inc.replace(False, np.NaN)
+            feed_csv[feed_name+'_error_med'] = error_med.replace(False, np.NaN)
+            feed_csv.to_csv(household_name.lower()+'_'+feed_name+'.csv', sep=';', decimal=',', encoding='utf-8')
 
         feeds_success += 1
         update_progress(feeds_success, feeds_existing)
@@ -134,15 +141,15 @@ def validate(df, household_name, feeds, headers, output=False):
     return fixed
 
 
-def _feed_adjustment(time, feed):
+def _feed_adjustment(adjustment, feed):
     '''
     Adjust the energy data series, to take actions against e.g. energy meter counter reset
     or changed smart meters, resulting in sudden jumps of the counter
 
     Parameters
     ----------
-    time : str
-        datetime string, indicating the adjustments occurrence
+    adjustment : dict of str
+         subset of adjustments necessary to be made to the feed
     feed : pandas.DataFrame
         DataFrame feed series to adjust
 
@@ -152,11 +159,24 @@ def _feed_adjustment(time, feed):
         Adjusted DataFrame of selected feed
 
     '''
-    # Changed smart meters, resulting in a lower counter value
-    error_time = pytz.timezone('UTC').localize(datetime.strptime(time, '%Y-%m-%d %H:%M:%S'))
-    error_index = feed.index.get_loc(error_time)
-    error_delta = feed.iloc[error_index-1] - feed.iloc[error_index]
-    feed.loc[feed.index >= error_time] = feed.loc[feed.index >= error_time] + error_delta
+    error_start = pytz.timezone('UTC').localize(datetime.strptime(adjustment['start'], '%Y-%m-%d %H:%M:%S'))
+    if 'end' in adjustment:
+        error_end = pytz.timezone('UTC').localize(datetime.strptime(adjustment['end'], '%Y-%m-%d %H:%M:%S'))
+    else:
+        error_end = feed.index[-1]
+    
+    error_type = adjustment['type']
+    if error_type == 'remove':
+        # A whole time period needs to be removed due to very unstable transmission
+        error_index = feed.index.get_loc(error_start)
+        error_delta = feed.iloc[error_index-1] - feed.iloc[error_index]
+        feed = feed.loc[(feed.index < error_start) | (feed.index > error_end)]
+    
+    elif error_type == 'difference':
+        # Changed smart meters, resulting in a lower counter value
+        error_index = feed.index.get_loc(error_start)
+        error_delta = feed.iloc[error_index-1] - feed.iloc[error_index]
+        feed.loc[error_start:error_end] = feed.loc[error_start:error_end] + error_delta
 
     return feed
 
