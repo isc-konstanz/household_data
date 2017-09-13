@@ -26,6 +26,13 @@ Residential 4:
         heat_pump:
             id: 49
             unit: 'kWh'
+            adjustments:
+                - type: remove
+                  start: '2015-10-25 02:02:50'
+                  end: '2015-10-25 02:26:44'
+                - type: remove
+                  start: '2016-10-30 02:00:11'
+                  end: '2016-10-30 02:59:29'
         dishwasher:
             id: 62
             unit: 'kWh'
@@ -36,13 +43,33 @@ Residential 4:
             id: 65
             unit: 'kWh'
             adjustments:
-                - '2015-11-2 21:01:49'
-                - '2015-11-26 11:34:12'
-                - '2015-11-26 18:21:06'
-                - '2016-05-11 20:32:33'
+                - type: remove
+                  start: '2015-10-25 02:00:16'
+                  end: '2015-10-25 02:47:47'
+                - type: difference
+                  start: '2015-11-2 21:01:49'
+                - type: difference
+                  start: '2015-11-26 11:34:12'
+                - type: difference
+                  start: '2015-11-26 18:21:06'
+                - type: remove
+                  start: '2015-12-03 12:37:35'
+                  end: '2015-12-04 12:19:12'
+                - type: remove
+                  start: '2016-10-30 02:11:26'
+                  end: '2016-10-30 02:57:35'
+                - type: difference
+                  start: '2016-05-11 20:32:33'
         freezer:
             id: 59
             unit: 'kWh'
+            adjustments:
+                - type: remove
+                  start: '2015-10-25 02:00:01'
+                  end: '2015-10-25 02:57:01'
+                - type: remove
+                  start: '2016-10-30 02:00:13'
+                  end: '2016-10-30 02:59:31'
     resolutions:
         - key: 3min
           seconds: 180
