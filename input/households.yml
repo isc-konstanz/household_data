@@ -117,9 +117,9 @@ Industrial 3:
         area_room_clean1:
             id: 67
             unit: 'kWh'
-        facility_furnace_centrotherm:
-            id: 77
-            unit: 'kWh'
+#        facility_furnace_centrotherm:
+#            id: 77
+#            unit: 'kWh'
         facility_cvd_centrotherm:
             id: 73
             unit: 'kWh'
@@ -144,18 +144,19 @@ Industrial 3:
         refrigerator:
             id: 95
             unit: 'kWh'
-        ev:
-            id: 100
-            unit: 'kWh'
-        area_room_clean2:
-            id: 115
-            unit: 'kWh'
-        area_room_clean:
-            id: 117
-            unit: 'kWh'
-        consumption:
-            id: 121
-            unit: 'kWh'
+#        ev:
+#            id: 100
+#            unit: 'kWh'
+
+#        area_room_clean2:
+#            id: 115
+#            unit: 'kWh'
+#        area_room_clean:
+#            id: 117
+#            unit: 'kWh'
+#        consumption:
+#            id: 121
+#            unit: 'kWh'
     resolutions:
         - key: 3min
           seconds: 180
