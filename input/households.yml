@@ -51,3 +51,86 @@ Residential 4:
         - key: 1min
           seconds: 60
           start: '2016-09-06 15:04:00'
+
+Industrial 3:
+    dir: 'DE_KN_industrial_003'
+    region: 'DE_KN'
+    type: 'industrial_building_institute'
+    feeds:
+        grid_import:
+            id: 25
+            unit: 'kWh'
+        pv:
+            id: 34
+            unit: 'kWh'
+        pv_roof:
+            id: 43
+            unit: 'kWh'
+        pv_facade:
+            id: 46
+            unit: 'kWh'
+        area_offices:
+            id: 49
+            unit: 'kWh'
+        ventilation:
+            id: 52
+            unit: 'kWh'
+        cooling_aggregate:
+            id: 55
+            unit: 'kWh'
+        compressor:
+            id: 58
+            unit: 'kWh'
+        cooling_pumps:
+            id: 61
+            unit: 'kWh'
+        area_room_chemistry:
+            id: 64
+            unit: 'kWh'
+        area_room_clean1:
+            id: 67
+            unit: 'kWh'
+        facility_furnace_centrotherm:
+            id: 77
+            unit: 'kWh'
+        facility_cvd_centrotherm:
+            id: 73
+            unit: 'kWh'
+        facility_diffusion_centrotherm:
+            id: 76
+            unit: 'kWh'
+        facility_diffusion_tecnofirmes:
+            id: 79
+            unit: 'kWh'
+        facility_indus_rena:
+            id: 82
+            unit: 'kWh'
+        area_room_printing1:
+            id: 85
+            unit: 'kWh'
+        area_room_printing2:
+            id: 88
+            unit: 'kWh'
+        dishwasher:
+            id: 91
+            unit: 'kWh'
+        refrigerator:
+            id: 95
+            unit: 'kWh'
+        ev:
+            id: 100
+            unit: 'kWh'
+        area_room_clean2:
+            id: 115
+            unit: 'kWh'
+        area_room_clean:
+            id: 117
+            unit: 'kWh'
+        consumption:
+            id: 121
+            unit: 'kWh'
+    resolutions:
+        - key: 3min
+          seconds: 180
+        - key: 1min
+          seconds: 60

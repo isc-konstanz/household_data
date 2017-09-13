@@ -136,6 +136,7 @@ DE_KN: Germany, Konstanz
 
 type_template = '''
 residential_building_suburb: residential building, located in the suburban area
+industrial_building_institute: industrial building, part of a research institute
 '''
 
 descriptions_template = '''
@@ -155,6 +156,8 @@ washing_machine: Washing machine energy consumption in a {type} in {unit}
 refrigerator: Refrigerator energy consumption in a {type} in {unit}
 freezer: Freezer energy consumption in a {type} in {unit}
 cooling_aggregate: Cooling aggregate energy consumption in a {type} in {unit}
+compressor: Compressor energy consumption in a {type} in {unit}
+cooling_pumps: Cooling pumps energy consumption in a {type} in {unit}
 facility: Energy consumption of an industrial- or research-facility in a {type} in {unit}
 area: Energy consumption of an area, consisting of several smaller loads, in a {type} in {unit}
 default: Energy in {unit}
@@ -236,7 +239,10 @@ def make_json(data_sets, info_cols, version, changes, headers):
                 descriptions_template.format(
                     type=types[h['type']], unit=h['unit']))
             try:
-                h['description'] = descriptions[h['feed']]
+                feed = h['feed']
+                prefix = feed.get(k).__name__.split(sep="_")[0]
+                if feed.get(k).__name__.startswith(prefix):
+                    h['description'] = descriptions[prefix]
             except KeyError:
                 h['description'] = descriptions['default']
             
