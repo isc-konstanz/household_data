@@ -241,7 +241,9 @@ def make_json(data_sets, info_cols, version, changes, headers):
             try:
                 feed = h['feed']
                 prefix = feed.split(sep="_")[0]
-                if feed.startswith(prefix):
+                if feed in descriptions:
+                    h['description'] = descriptions[feed]
+                else:
                     h['description'] = descriptions[prefix]
             except KeyError:
                 h['description'] = descriptions['default']
