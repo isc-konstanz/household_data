@@ -6,6 +6,186 @@
 # households.yml : Parameters specifying all households to be processed
 #
 
+Residential 1:
+    dir: 'DE_KN_residential_001'
+    region: 'DE_KN'
+    type: 'residential_building_suburb'
+    feeds:
+        grid_import:
+            id: 56
+            unit: 'kWh'
+        pv:
+            id: 59
+            unit: 'kWh'
+        heat_pump:
+            id: 62
+            unit: 'kWh'
+        washing_machine:
+            id: 65
+            unit: 'kWh'
+            adjustments:
+                - type: difference
+                  start: '2015-09-22 12:52:16'
+                - type: difference
+                  start: '2015-11-26 05:45:39'
+                - type: difference
+                  start: '2016-07-11 08:03:56'
+                - type: difference
+                  start: '2016-11-16 15:02:15'
+        freezer:
+            id: 69
+            unit: 'kWh'
+            adjustments:
+                - type: difference
+                  start: '2015-11-26 05:45:38'
+                - type: difference
+                  start: '2016-07-11 08:04:41'
+                - type: difference
+                  start: '2016-08-31 21:25:18'
+        dishwasher:
+            id: 74
+            unit: 'kWh'
+            adjustments:
+                - type: difference
+                  start: '2015-11-26 05:45:37'
+                - type: difference
+                  start: '2016-07-11 08:04:34'
+    resolutions:
+        - key: 3min
+          seconds: 180
+        - key: 1min
+          seconds: 60
+
+Residential 2:
+    dir: 'DE_KN_residential_002'
+    region: 'DE_KN'
+    type: 'residential_building_suburb'
+    feeds:
+        grid_import:
+            id: 25
+            unit: 'kWh'
+        heating:
+            id: 40
+            unit: 'kWh'
+        washing_machine:
+            id: 49
+            unit: 'kWh'
+            adjustments:
+                - type: difference
+                  start: '2015-11-26 05:45:42'
+                - type: difference
+                  start: '2017-01-11 10:01:13'
+                - type: difference
+                  start: '2017-01-25 12:26:44'
+                - type: difference
+                  start: '2017-02-01 17:08:16'
+        freezer:
+            id: 52
+            unit: 'kWh'
+            adjustments:
+                - type: difference
+                  start: '2015-09-22 18:44:56'
+                - type: difference
+                  start: '2015-11-26 05:45:39'
+                - type: difference
+                  start: '2016-05-07 19:13:19'
+                - type: difference
+                  start: '2016-06-09 18:57:02'
+        dishwasher:
+            id: 46
+            unit: 'kWh'
+            adjustments:
+                - type: difference
+                  start: '2015-11-26 05:45:39'
+                - type: difference
+                  start: '2017-02-01 16:46:31'
+                - type: difference
+                  start: '2017-02-03 06:35:05'
+                - type: difference
+                  start: '2017-02-03 19:06:52'
+                - type: difference
+                  start: '2017-02-06 14:44:01'
+        fan_heater:
+            id: 79
+            unit: 'kWh'
+            adjustments:
+                - type: difference
+                  start: '2016-08-19 09:17:27'
+                - type: difference
+                  start: '2016-09-03 13:16:50'
+                - type: difference
+                  start: '2016-11-25 06:59:46'
+                - type: difference
+                  start: '2017-01-16 16:01:58'
+                - type: difference
+                  start: '2017-01-18 15:17:34'
+                - type: difference
+                  start: '2017-02-01 16:46:35'
+    resolutions:
+        - key: 3min
+          seconds: 180
+        - key: 1min
+          seconds: 60
+
+Residential 3:
+    dir: 'DE_KN_residential_003'
+    region: 'DE_KN'
+    type: 'residential_building_suburb'
+    feeds:
+        grid_import:
+            id: 138
+            unit: 'kWh'
+        heating:
+            id: 60
+            unit: 'kWh'
+        dishwasher:
+            id: 57
+            unit: 'kWh'
+            adjustments:
+                - type: remove
+                  start: '2016-11-22 14:12:11'
+                  end: '2016-11-22 14:13:02'
+                - type: remove
+                  start: '2016-11-22 16:00:56'
+                  end: '2016-11-22 16:00:56'
+        refrigerator:
+            id: 48
+            unit: 'kWh'
+            adjustments:
+                - type: difference
+                  start: '2016-08-26 22:11:31'
+                - type: difference
+                  start: '2016-08-27 15:27:51'
+        washing_machine:
+            id: 54
+            unit: 'kWh'
+            adjustments:
+            - type: difference
+              start: '2016-08-26 22:11:31'
+            - type: difference
+              start: '2016-09-01 21:43:13'
+            - type: remove
+              start: '2016-10-30 02:03:08'
+              end: '2016-10-30 02:34:51'
+        freezer:
+            id: 51
+            unit: 'kWh'
+            adjustments:
+              - type: difference
+                start: '2014-12-17 16:42:11'
+              - type: difference
+                start: '2016-08-26 22:11:33'
+              - type: difference
+                start: '2016-08-27 15:27:53'
+        pv:
+            id: 141
+            unit: 'kWh'
+    resolutions:
+        - key: 3min
+          seconds: 180
+        - key: 1min
+          seconds: 60
+
 Residential 4:
     dir: 'DE_KN_residential_004'
     region: 'DE_KN'
@@ -79,6 +259,180 @@ Residential 4:
           seconds: 60
           start: '2016-09-06 15:04:00'
 
+Residential 5:
+    dir: 'DE_KN_residential_005'
+    region: 'DE_KN'
+    type: 'residential_building_suburb'
+    feeds:
+        grid_import:
+            id: 40
+            unit: 'kWh'
+        refrigerator:
+            id: 43
+            unit: 'kWh'
+            adjustments:
+              - type: difference
+                start: '2016-01-04 19:49:19'
+        washing_machine:
+            id: 47
+            unit: 'kWh'
+            adjustments:
+              - type: difference
+                start: '2016-01-04 19:19:48'
+        dishwasher:
+            id: 51
+            unit: 'kWh'
+    resolutions:
+        - key: 3min
+          seconds: 180
+        - key: 1min
+          seconds: 60
+
+Residential 6:
+    dir: 'DE_KN_residential_006'
+    region: 'DE_KN'
+    type: 'residential_building_suburb'
+    feeds:
+        grid_import:
+            id: 40
+            unit: 'kWh'
+        pv:
+            id: 43
+            unit: 'kWh'
+        heating:
+            id: 46
+            unit: 'kWh'
+        dishwasher:
+            id: 49
+            unit: 'kWh'
+            adjustments:
+              - type: difference
+                start: '2015-11-30 20:23:32'
+              - type: difference
+                start: '2016-03-14 21:59:41'
+              - type: difference
+                start: '2016-04-25 13:56:25'
+              - type: difference
+                start: '2016-05-03 12:19:46'
+              - type: difference
+                start: '2016-05-12 14:24:01'
+              - type: difference
+                start: '2016-07-05 11:34:19'
+              - type: difference
+                start: '2016-07-17 19:28:56'
+              - type: difference
+                start: '2016-08-19 00:33:05'
+              - type: difference
+                start: '2016-11-09 11:47:25'
+              - type: difference
+                start: '2016-12-28 16:50:55'
+        washing_machine:
+            id: 53
+            unit: 'kWh'
+            adjustments:
+              - type: difference
+                start: '2015-11-30 20:20:40'
+              - type: difference
+                start: '2016-03-02 16:38:45'
+              - type: difference
+                start: '2016-03-02 16:48:20'
+              - type: difference
+                start: '2016-03-23 17:15:36'
+              - type: difference
+                start: '2016-04-25 13:53:34'
+              - type: difference
+                start: '2016-07-17 19:30:09'
+              - type: difference
+                start: '2016-09-26 19:39:41'
+        freezer:
+            id: 57
+            unit: 'kWh'
+            adjustments:
+              - type: difference
+                start: '2016-04-25 14:08:04'
+              - type: difference
+                start: '2016-05-12 14:24:14'
+              - type: difference
+                start: '2016-07-17 19:30:19'
+              - type: difference
+                start: '2016-07-24 11:10:36'
+    resolutions:
+        - key: 3min
+          seconds: 180
+        - key: 1min
+          seconds: 60
+
+Public 1:
+    dir: 'DE_KN_public_001'
+    region: 'DE_KN'
+    type: 'public_building_suburb'
+    feeds:
+        grid_import:
+            id: 40
+            unit: 'kWh'
+    resolutions:
+        - key: 3min
+          seconds: 180
+        - key: 1min
+          seconds: 60
+          
+Public 2:
+    dir: 'DE_KN_public_002'
+    region: 'DE_KN'
+    type: 'public_building_suburb'
+    feeds:
+        grid_import:
+            id: 40
+            unit: 'kWh'
+    resolutions:
+        - key: 3min
+          seconds: 180
+        - key: 1min
+          seconds: 60
+          
+Industrial 1:
+    dir: 'DE_KN_industrial_001'
+    region: 'DE_KN'
+    type: 'industrial_building_institute'
+    feeds:
+        grid_import:
+            id: 25
+            unit: 'kWh'
+        pv_1:
+            id: 43
+            unit: 'kWh'
+        pv_2:
+            id: 46
+            unit: 'kWh'
+    resolutions:
+        - key: 3min
+          seconds: 180
+        - key: 1min
+          seconds: 60
+
+Industrial 2:
+    dir: 'DE_KN_industrial_002'
+    region: 'DE_KN'
+    type: 'industrial_building_institute'
+    feeds:
+        grid_import:
+            id: 25
+            unit: 'kWh'
+        pv_1:
+            id: 46
+            unit: 'kWh'
+        pv_2:
+            id: 49
+            unit: 'kWh'
+        energy_storage:
+            id: 52
+            unit: 'kWh'
+    resolutions:
+        - key: 3min
+          seconds: 180
+        - key: 1min
+          seconds: 60
+
 Industrial 3:
     dir: 'DE_KN_industrial_003'
     region: 'DE_KN'
@@ -114,12 +468,12 @@ Industrial 3:
         area_room_chemistry:
             id: 64
             unit: 'kWh'
-        area_room_clean1:
+        area_room_clean:
             id: 67
             unit: 'kWh'
-#        facility_furnace_centrotherm:
-#            id: 77
-#            unit: 'kWh'
+        facility_furnace_centrotherm:
+            id: 70
+            unit: 'kWh'
         facility_cvd_centrotherm:
             id: 73
             unit: 'kWh'
@@ -141,22 +495,46 @@ Industrial 3:
         dishwasher:
             id: 91
             unit: 'kWh'
+            adjustments:
+                - type: remove
+                  start: '2015-10-25 02:00:03'
+                  end: '2015-10-25 02:57:15'
+                - type: difference
+                  start: '2015-11-26 05:45:40'
+                - type: difference
+                  start: '2016-02-11 16:38:04'
+                - type: remove
+                  start: '2016-05-19 11:59:40'
+                  end: '2016-05-19 18:03:35'
+                - type: remove
+                  start: '2016-05-19 18:13:28'
+                  end: '2016-06-17 11:02:48'
+                - type: difference
+                  start: '2016-08-18 12:48:41'
         refrigerator:
             id: 95
             unit: 'kWh'
-#        ev:
-#            id: 100
-#            unit: 'kWh'
-
-#        area_room_clean2:
-#            id: 115
-#            unit: 'kWh'
-#        area_room_clean:
-#            id: 117
-#            unit: 'kWh'
-#        consumption:
-#            id: 121
-#            unit: 'kWh'
+            adjustments:
+                - type: remove
+                  start: '2015-10-25 02:03:23'
+                  end: '2015-10-25 02:57:21'
+                - type: difference
+                  start: '2015-11-26 05:48:31'
+                - type: difference
+                  start: '2015-12-04 12:20:08'
+                - type: difference
+                  start: '2016-02-11 16:36:52'
+                - type: difference
+                  start: '2016-09-07 12:46:09'
+                - type: remove
+                  start: '2016-09-07 15:28:10'
+                  end: '2016-09-07 18:03:26'
+                - type: difference
+                  start: '2016-11-30 10:25:42'
+        ev:
+            id: 100
+            unit: 'kWh' # bis 2016-03-27 11:57:35 vermutlich Kommafehler
+                        # wegen minute nicht in range 0..59
     resolutions:
         - key: 3min
           seconds: 180
