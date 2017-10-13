@@ -53,8 +53,11 @@ Residential 1:
     resolutions:
         - key: 3min
           seconds: 180
+          start: '2015-04-15 20:32:24'
+          end: '2016-09-06 09:05:57'
         - key: 1min
           seconds: 60
+          start: '2016-09-06 09:07:02'
 
 Residential 2:
     dir: 'DE_KN_residential_002'
@@ -124,8 +127,11 @@ Residential 2:
     resolutions:
         - key: 3min
           seconds: 180
+          start: '2015-04-15 11:24:08'
+          end: '2016-04-08 16:59:13'
         - key: 1min
           seconds: 60
+          start: '2016-04-08 17:00:13'
 
 Residential 3:
     dir: 'DE_KN_residential_003'
@@ -183,8 +189,11 @@ Residential 3:
     resolutions:
         - key: 3min
           seconds: 180
+          start: '2016-02-28 18:17:43'
+          end: '2016-10-19 15:11:13'
         - key: 1min
           seconds: 60
+          start: '2016-10-19 15:12:13'
 
 Residential 4:
     dir: 'DE_KN_residential_004'
@@ -285,6 +294,7 @@ Residential 5:
     resolutions:
         - key: 3min
           seconds: 180
+          start: '2015-10-26 12:05:56'
         - key: 1min
           seconds: 60
 
@@ -359,8 +369,11 @@ Residential 6:
     resolutions:
         - key: 3min
           seconds: 180
+          start: '2015-10-24 18:01:44'
+          end: '2016-05-03 12:17:47'
         - key: 1min
           seconds: 60
+          start: '2016-05-12 14:42:51'
 
 Public 1:
     dir: 'DE_KN_public_001'
@@ -373,6 +386,7 @@ Public 1:
     resolutions:
         - key: 3min
           seconds: 180
+          start: '2016-05-17 12:13:19'
         - key: 1min
           seconds: 60
           
@@ -387,8 +401,11 @@ Public 2:
     resolutions:
         - key: 3min
           seconds: 180
+          start: '2016-10-21 13:17:53'
+          end: '2016-10-21 13:17:53'
         - key: 1min
           seconds: 60
+          start: '2016-12-01 14:45:25'
           
 Industrial 1:
     dir: 'DE_KN_industrial_001'
@@ -407,8 +424,11 @@ Industrial 1:
     resolutions:
         - key: 3min
           seconds: 180
+          start: '2015-10-14 10:59:48'
+          end: '2016-03-23 12:07:28'
         - key: 1min
           seconds: 60
+          start: '2016-07-04 12:39:09'
 
 Industrial 2:
     dir: 'DE_KN_industrial_002'
@@ -430,8 +450,11 @@ Industrial 2:
     resolutions:
         - key: 3min
           seconds: 180
+          start: '2016-02-17 15:30:15'
+          end: '2016-04-24 19:10:51'
         - key: 1min
           seconds: 60
+          start: '2016-04-24 19:13:14'
 
 Industrial 3:
     dir: 'DE_KN_industrial_003'
@@ -538,5 +561,8 @@ Industrial 3:
     resolutions:
         - key: 3min
           seconds: 180
+          start: '2016-02-11 10:24:58'
+          end: '2016-03-29 10:09:22'
         - key: 1min
           seconds: 60
+          start: '2016-03-29 10:10:14'
