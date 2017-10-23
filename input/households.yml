@@ -32,6 +32,14 @@ Residential 1:
                   start: '2016-07-11 08:03:56'
                 - type: difference
                   start: '2016-11-16 15:02:15'
+        dishwasher:
+            id: 74
+            unit: 'kWh'
+            adjustments:
+                - type: difference
+                  start: '2015-11-26 05:45:37'
+                - type: difference
+                  start: '2016-07-11 08:04:34'
         freezer:
             id: 69
             unit: 'kWh'
@@ -42,14 +50,6 @@ Residential 1:
                   start: '2016-07-11 08:04:41'
                 - type: difference
                   start: '2016-08-31 21:25:18'
-        dishwasher:
-            id: 74
-            unit: 'kWh'
-            adjustments:
-                - type: difference
-                  start: '2015-11-26 05:45:37'
-                - type: difference
-                  start: '2016-07-11 08:04:34'
     resolutions:
         - key: 3min
           seconds: 180
@@ -67,7 +67,7 @@ Residential 2:
         grid_import:
             id: 25
             unit: 'kWh'
-        heating:
+        circulation_pump:
             id: 40
             unit: 'kWh'
         washing_machine:
@@ -82,18 +82,6 @@ Residential 2:
                   start: '2017-01-25 12:26:44'
                 - type: difference
                   start: '2017-02-01 17:08:16'
-        freezer:
-            id: 52
-            unit: 'kWh'
-            adjustments:
-                - type: difference
-                  start: '2015-09-22 18:44:56'
-                - type: difference
-                  start: '2015-11-26 05:45:39'
-                - type: difference
-                  start: '2016-05-07 19:13:19'
-                - type: difference
-                  start: '2016-06-09 18:57:02'
         dishwasher:
             id: 46
             unit: 'kWh'
@@ -108,6 +96,18 @@ Residential 2:
                   start: '2017-02-03 19:06:52'
                 - type: difference
                   start: '2017-02-06 14:44:01'
+        freezer:
+            id: 52
+            unit: 'kWh'
+            adjustments:
+                - type: difference
+                  start: '2015-09-22 18:44:56'
+                - type: difference
+                  start: '2015-11-26 05:45:39'
+                - type: difference
+                  start: '2016-05-07 19:13:19'
+                - type: difference
+                  start: '2016-06-09 18:57:02'
         heating:
             id: 79
             unit: 'kWh'
@@ -141,9 +141,26 @@ Residential 3:
         grid_import:
             id: 138
             unit: 'kWh'
-        heating:
+        grid_export:
+            id: 135
+            unit: 'kWh'
+        pv:
+            id: 141
+            unit: 'kWh'
+        circulation_pump:
             id: 60
             unit: 'kWh'
+        washing_machine:
+            id: 54
+            unit: 'kWh'
+            adjustments:
+            - type: difference
+              start: '2016-08-26 22:11:31'
+            - type: difference
+              start: '2016-09-01 21:43:13'
+            - type: remove
+              start: '2016-10-30 02:03:08'
+              end: '2016-10-30 02:34:51'
         dishwasher:
             id: 57
             unit: 'kWh'
@@ -162,17 +179,6 @@ Residential 3:
                   start: '2016-08-26 22:11:31'
                 - type: difference
                   start: '2016-08-27 15:27:51'
-        washing_machine:
-            id: 54
-            unit: 'kWh'
-            adjustments:
-            - type: difference
-              start: '2016-08-26 22:11:31'
-            - type: difference
-              start: '2016-09-01 21:43:13'
-            - type: remove
-              start: '2016-10-30 02:03:08'
-              end: '2016-10-30 02:34:51'
         freezer:
             id: 51
             unit: 'kWh'
@@ -183,9 +189,6 @@ Residential 3:
                 start: '2016-08-26 22:11:33'
               - type: difference
                 start: '2016-08-27 15:27:53'
-        pv:
-            id: 141
-            unit: 'kWh'
     resolutions:
         - key: 3min
           seconds: 180
@@ -222,11 +225,11 @@ Residential 4:
                 - type: remove
                   start: '2016-10-30 02:00:11'
                   end: '2016-10-30 02:59:29'
-        dishwasher:
-            id: 62
-            unit: 'kWh'
         washing_machine:
             id: 56
+            unit: 'kWh'
+        dishwasher:
+            id: 62
             unit: 'kWh'
         refrigerator:
             id: 65
@@ -276,12 +279,6 @@ Residential 5:
         grid_import:
             id: 40
             unit: 'kWh'
-        refrigerator:
-            id: 43
-            unit: 'kWh'
-            adjustments:
-              - type: difference
-                start: '2016-01-04 19:49:19'
         washing_machine:
             id: 47
             unit: 'kWh'
@@ -291,6 +288,12 @@ Residential 5:
         dishwasher:
             id: 51
             unit: 'kWh'
+        refrigerator:
+            id: 43
+            unit: 'kWh'
+            adjustments:
+              - type: difference
+                start: '2016-01-04 19:49:19'
     resolutions:
         - key: 3min
           seconds: 180
@@ -306,12 +309,33 @@ Residential 6:
         grid_import:
             id: 40
             unit: 'kWh'
+        grid_export:
+            id: 62
+            unit: 'kWh'
         pv:
             id: 43
             unit: 'kWh'
-        heating:
+        circulation_pump:
             id: 46
             unit: 'kWh'
+        washing_machine:
+            id: 53
+            unit: 'kWh'
+            adjustments:
+              - type: difference
+                start: '2015-11-30 20:20:40'
+              - type: difference
+                start: '2016-03-02 16:38:45'
+              - type: difference
+                start: '2016-03-02 16:48:20'
+              - type: difference
+                start: '2016-03-23 17:15:36'
+              - type: difference
+                start: '2016-04-25 13:53:34'
+              - type: difference
+                start: '2016-07-17 19:30:09'
+              - type: difference
+                start: '2016-09-26 19:39:41'
         dishwasher:
             id: 49
             unit: 'kWh'
@@ -336,24 +360,6 @@ Residential 6:
                 start: '2016-11-09 11:47:25'
               - type: difference
                 start: '2016-12-28 16:50:55'
-        washing_machine:
-            id: 53
-            unit: 'kWh'
-            adjustments:
-              - type: difference
-                start: '2015-11-30 20:20:40'
-              - type: difference
-                start: '2016-03-02 16:38:45'
-              - type: difference
-                start: '2016-03-02 16:48:20'
-              - type: difference
-                start: '2016-03-23 17:15:36'
-              - type: difference
-                start: '2016-04-25 13:53:34'
-              - type: difference
-                start: '2016-07-17 19:30:09'
-              - type: difference
-                start: '2016-09-26 19:39:41'
         freezer:
             id: 57
             unit: 'kWh'
@@ -386,9 +392,6 @@ Public 1:
     resolutions:
         - key: 3min
           seconds: 180
-          start: '2016-05-17 12:13:19'
-        - key: 1min
-          seconds: 60
           
 Public 2:
     dir: 'DE_KN_public_002'
@@ -447,6 +450,9 @@ Industrial 2:
         storage_charge:
             id: 52
             unit: 'kWh'
+        storage_decharge:
+            id: 55
+            unit: 'kWh'
     resolutions:
         - key: 3min
           seconds: 180
@@ -473,6 +479,10 @@ Industrial 3:
         pv_facade:
             id: 46
             unit: 'kWh'
+        ev:
+            id: 100
+            unit: 'kWh' # bis 2016-03-27 11:57:35 vermutlich Kommafehler
+                        # wegen minute nicht in range 0..59
         area_offices:
             id: 49
             unit: 'kWh'
@@ -554,10 +564,6 @@ Industrial 3:
                   end: '2016-09-07 18:03:26'
                 - type: difference
                   start: '2016-11-30 10:25:42'
-        ev:
-            id: 100
-            unit: 'kWh' # bis 2016-03-27 11:57:35 vermutlich Kommafehler
-                        # wegen minute nicht in range 0..59
     resolutions:
         - key: 3min
           seconds: 180
