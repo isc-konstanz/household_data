@@ -136,8 +136,12 @@ DE_KN: Germany, Konstanz
 
 type_template = '''
 residential_building_suburb: residential building, located in the suburban area
+residential_building_urban: residential building, located in the urban area
+residential_apartment_urban: residential apartment, located in the urban area
+industrial_building_warehouse: industrial warehouse building
+industrial_building_craft: industrial building of a business in the crafts sector
 industrial_building_institute: industrial building, part of a research institute
-public_building_suburb: public building, located in the suburban area
+school_building_urban: school building, located in the urban area
 '''
 
 descriptions_template = '''
@@ -160,8 +164,6 @@ cooling_aggregate: Cooling aggregate energy consumption in a {type} in {unit}
 compressor: Compressor energy consumption in a {type} in {unit}
 cooling_pumps: Cooling pumps energy consumption in a {type} in {unit}
 heating: Heating energy consumption in a {type} in {unit}
-fan_heater: Fan heater energy consumption in a {type} in {unit}
-energy_storage: Energy storage energy consumption in a {type} in {unit}
 facility: Energy consumption of an industrial- or research-facility in a {type} in {unit}
 area: Energy consumption of an area, consisting of several smaller loads, in a {type} in {unit}
 default: Energy in {unit}

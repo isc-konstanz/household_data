@@ -108,7 +108,7 @@ Residential 2:
                   start: '2017-02-03 19:06:52'
                 - type: difference
                   start: '2017-02-06 14:44:01'
-        fan_heater:
+        heating:
             id: 79
             unit: 'kWh'
             adjustments:
@@ -136,7 +136,7 @@ Residential 2:
 Residential 3:
     dir: 'DE_KN_residential_003'
     region: 'DE_KN'
-    type: 'residential_building_suburb'
+    type: 'residential_building_urban'
     feeds:
         grid_import:
             id: 138
@@ -198,7 +198,7 @@ Residential 3:
 Residential 4:
     dir: 'DE_KN_residential_004'
     region: 'DE_KN'
-    type: 'residential_building_suburb'
+    type: 'residential_building_urban'
     feeds:
         grid_import:
             id: 25
@@ -271,7 +271,7 @@ Residential 4:
 Residential 5:
     dir: 'DE_KN_residential_005'
     region: 'DE_KN'
-    type: 'residential_building_suburb'
+    type: 'residential_apartment_urban'
     feeds:
         grid_import:
             id: 40
@@ -301,7 +301,7 @@ Residential 5:
 Residential 6:
     dir: 'DE_KN_residential_006'
     region: 'DE_KN'
-    type: 'residential_building_suburb'
+    type: 'residential_building_urban'
     feeds:
         grid_import:
             id: 40
@@ -378,7 +378,7 @@ Residential 6:
 Public 1:
     dir: 'DE_KN_public_001'
     region: 'DE_KN'
-    type: 'public_building_suburb'
+    type: 'school_building_urban'
     feeds:
         grid_import:
             id: 40
@@ -393,7 +393,7 @@ Public 1:
 Public 2:
     dir: 'DE_KN_public_002'
     region: 'DE_KN'
-    type: 'public_building_suburb'
+    type: 'school_building_urban'
     feeds:
         grid_import:
             id: 40
@@ -410,7 +410,7 @@ Public 2:
 Industrial 1:
     dir: 'DE_KN_industrial_001'
     region: 'DE_KN'
-    type: 'industrial_building_institute'
+    type: 'industrial_building_warehouse'
     feeds:
         grid_import:
             id: 25
@@ -433,7 +433,7 @@ Industrial 1:
 Industrial 2:
     dir: 'DE_KN_industrial_002'
     region: 'DE_KN'
-    type: 'industrial_building_institute'
+    type: 'industrial_building_craft'
     feeds:
         grid_import:
             id: 25
@@ -444,7 +444,7 @@ Industrial 2:
         pv_2:
             id: 49
             unit: 'kWh'
-        energy_storage:
+        storage_charge:
             id: 52
             unit: 'kWh'
     resolutions:
