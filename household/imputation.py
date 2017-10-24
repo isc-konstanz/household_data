@@ -46,18 +46,18 @@ def make_equidistant(df, household_name, resolution, interval, start, end, feeds
         
         # Extend index to have a regular frequency
         minute = feed.index[0].minute + (int(interval/60) - feed.index[0].minute % int(interval/60))
-		hour = feed.index[0].hour
+        hour = feed.index[0].hour
         if(minute > 59):
             minute = 0
-			hour += 1
+            hour += 1
         feed_start = feed.index[0].replace(hour=hour, minute=minute, second=0)
-		
-		minute = feed.index[-1].minute - (feed.index[-1].minute % int(interval/60)
-		hour = feed.index[-1].hour
+
+        minute = feed.index[-1].minute - (feed.index[-1].minute % int(interval/60))
+        hour = feed.index[-1].hour
         if(minute > 59):
             minute = 0
-			hour += 1
-        feed_end = feed.index[-1].replace(hour=hour, minute=minute), second=0)
+            hour += 1
+        feed_end = feed.index[-1].replace(hour=hour, minute=minute, second=0)
         
         feed_index = pd.DatetimeIndex(start=feed_start, end=feed_end, freq=resolution)
         feed = feed.combine_first(pd.DataFrame(index=feed_index, columns=feed.columns))
