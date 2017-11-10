@@ -39,48 +39,49 @@ def make_equidistant(df, household_name, resolution, interval, start, end, feeds
     for feed_name in feeds.keys():
         feed = df.loc[(df.index >= start) & (df.index <= end), df.columns.get_level_values('feed')==feed_name].dropna()
         
-        # Find measurement outages, longer than 15 minutes
-        index_delta = pd.Series(feed.index, index=feed.index)
-        index_delta = (index_delta.shift(-1) - index_delta)/np.timedelta64(1, 'm')
-        outage = index_delta.loc[index_delta > 15]
+        if(len(feed.index) != 0):
+            # Find measurement outages, longer than 15 minutes
+            index_delta = pd.Series(feed.index, index=feed.index)
+            index_delta = (index_delta.shift(-1) - index_delta)/np.timedelta64(1, 'm')
+            outage = index_delta.loc[index_delta > 15]
+            
+            # Extend index to have a regular frequency
+            minute = feed.index[0].minute + (int(interval/60) - feed.index[0].minute % int(interval/60))
+            hour = feed.index[0].hour
+            if(minute > 59):
+                minute = 0
+                hour += 1
+            feed_start = feed.index[0].replace(hour=hour, minute=minute, second=0)
+    
+            minute = feed.index[-1].minute - (feed.index[-1].minute % int(interval/60))
+            hour = feed.index[-1].hour
+            if(minute > 59):
+                minute = 0
+                hour += 1
+            feed_end = feed.index[-1].replace(hour=hour, minute=minute, second=0)
+            
+            feed_index = pd.DatetimeIndex(start=feed_start, end=feed_end, freq=resolution)
+            feed = feed.combine_first(pd.DataFrame(index=feed_index, columns=feed.columns))
+            feed.index.name = 'timestamp'
+            
+            # Drop rows with outages longer than 15 minutes
+            for i in outage.index:
+                error = feed[i:i+timedelta(minutes=outage.loc[i])][1:-1]
+                feed = feed.drop(error.index)
+            
+            # Interpolate the values between the irregular data points and drop them afterwards, 
+            # to receive a regular index that is sure to be continuous, in order to later expose 
+            # remaining gaps in the data.
+            feed = feed.interpolate()
+            feed = feed.reindex(index=feed_index)
         
-        # Extend index to have a regular frequency
-        minute = feed.index[0].minute + (int(interval/60) - feed.index[0].minute % int(interval/60))
-        hour = feed.index[0].hour
-        if(minute > 59):
-            minute = 0
-            hour += 1
-        feed_start = feed.index[0].replace(hour=hour, minute=minute, second=0)
-
-        minute = feed.index[-1].minute - (feed.index[-1].minute % int(interval/60))
-        hour = feed.index[-1].hour
-        if(minute > 59):
-            minute = 0
-            hour += 1
-        feed_end = feed.index[-1].replace(hour=hour, minute=minute, second=0)
-        
-        feed_index = pd.DatetimeIndex(start=feed_start, end=feed_end, freq=resolution)
-        feed = feed.combine_first(pd.DataFrame(index=feed_index, columns=feed.columns))
-        feed.index.name = 'timestamp'
-        
-        # Drop rows with outages longer than 15 minutes
-        for i in outage.index:
-            error = feed[i:i+timedelta(minutes=outage.loc[i])][1:-1]
-            feed = feed.drop(error.index)
-        
-        # Interpolate the values between the irregular data points and drop them afterwards, 
-        # to receive a regular index that is sure to be continuous, in order to later expose 
-        # remaining gaps in the data.
-        feed = feed.interpolate()
-        feed = feed.reindex(index=feed_index)
-        
-        if equidistant.empty:
-            equidistant = feed
-        else:
-            equidistant = equidistant.combine_first(feed)
-
-        feeds_success += 1
-        update_progress(feeds_success, feeds_existing)
+            if equidistant.empty:
+                equidistant = feed
+            else:
+                equidistant = equidistant.combine_first(feed)
+    
+            feeds_success += 1
+            update_progress(feeds_success, feeds_existing)
 
     return equidistant
 

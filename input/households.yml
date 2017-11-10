@@ -481,8 +481,8 @@ Industrial 3:
             unit: 'kWh'
         ev:
             id: 100
-            unit: 'kWh' # bis 2016-03-27 11:57:35 vermutlich Kommafehler
-                        # wegen minute nicht in range 0..59
+            unit: 'kWh'
+            # bis 2016-03-27 11:57:35 vermutlich Kommafehler
         area_offices:
             id: 49
             unit: 'kWh'
