@@ -144,8 +144,7 @@ def read_feed(filepath, name):
             
             timestamp = int(line_tuple[0])
             if timestamp > 0:
-                times.append(datetime.fromtimestamp(timestamp))
-                
+                times.append(datetime.utcfromtimestamp(timestamp))                                
                 value = float(line_tuple[1])
                 data.append(value)
             

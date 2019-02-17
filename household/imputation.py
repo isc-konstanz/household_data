@@ -142,7 +142,7 @@ def find_nan(df, headers, resolution, patch=False):
         col['tag'] = (
             (col.index >= col.first_valid_index()) &
             (col.index <= col.last_valid_index()) &
-            col.isnull().transpose().as_matrix()
+            col.isnull().transpose().values
         ).transpose()
 
         # make another DF to hold info about each region
