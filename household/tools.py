@@ -61,13 +61,16 @@ def derive_power(feed):
         DataFrame with the power series of the feed
 
     '''
-
-    index_delta = pd.Series(feed.index, index=feed.index)
-    index_delta = (index_delta - index_delta.shift(1))/np.timedelta64(1, 'h')
-    feed_energy = feed.iloc[:,0].astype('float64')
     
-    feed_power = pd.DataFrame((feed_energy - feed_energy.shift(1))/index_delta, index=feed.index)
+    feed_energy = feed.iloc[:,0].astype('float64')
+    feed_energy = feed_energy[feed_energy - feed_energy.shift(1) != 0]
+    delta_energy = feed_energy - feed_energy.shift(1)
+    
+    delta_index = pd.Series(delta_energy.index, index=delta_energy.index)
+    delta_index = (delta_index - delta_index.shift(1))/np.timedelta64(1, 'h')
+    
+    feed_power = pd.DataFrame(delta_energy/delta_index, index=feed.index)
     feed_power.columns = ["Power [kW]"]
-
+    
     return feed_power
 

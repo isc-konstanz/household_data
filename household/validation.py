@@ -42,14 +42,15 @@ def validate(df, household_name, feeds, headers, output=False):
 
     Returns
     ----------    
-    fixed: pandas.DataFrame
-        Adjusted DataFrame with fixed series
+    result: pandas.DataFrame
+        Adjusted DataFrame with result series
 
     '''
-    fixed = pd.DataFrame()
+    result = pd.DataFrame()
 
     logger.info('Validate %s - feeds', household_name)
 
+    feeds_output = pd.DataFrame()
     feeds_existing = len(df.columns)
     feeds_success = 0
 
@@ -77,24 +78,28 @@ def validate(df, household_name, feeds, headers, output=False):
         for time in error_inc.replace(False, np.NaN).dropna().index:
             i = feed_fixed.index.get_loc(time)
             if i > 2 and i < feed_size:
+                error_flag = None
+                
                 # If a rounding or transmission error results in a single value being too big,
                 # flag that single data point, else flag all decreasing values
                 if feed_fixed.iloc[i,0] >= feed_fixed.iloc[i-2,0] and not error_inc.iloc[i-2,0]:
                     error_inc.iloc[i,0] = False
                     error_inc.iloc[i-1,0] = True
-                else:
-                    error_flag = None
                     
+                elif feed_fixed.iloc[i-1,0] > feed_fixed.iloc[i+100,0]:
+                    error_flag = feed_fixed.index[i]
+                    
+                else:
                     j = i+1
                     while j < feed_size and feed_fixed.iloc[i-1,0] > feed_fixed.iloc[j,0]:
                         if error_flag is None and j-i > 10:
-                            error_flag = feed_fixed.index[j-10]
+                            error_flag = feed_fixed.index[i]
                         
                         error_inc.iloc[j,0] = True
                         j = j+1
-                    
-                    if error_flag is not None:
-                        logger.warn('Unusual behaviour at index %s for %s: %s', error_flag.strftime('%d.%m.%Y %H:%M'), household_name, feed_name)
+                
+                if error_flag is not None:
+                    logger.warn('Unusual behaviour at index %s for %s: %s', error_flag.strftime('%d.%m.%Y %H:%M'), household_name, feed_name)
 
         if np.count_nonzero(error_inc) > 0:
             logger.debug("Dropped %s rows with decreasing energy for %s: %s", str(np.count_nonzero(error_inc)), household_name, feed_name)
@@ -112,33 +117,29 @@ def validate(df, household_name, feeds, headers, output=False):
         
         if np.count_nonzero(error_med) > 0:
             logger.debug("Dropped %s rows with %i times larger power than the median %f for %s: %s", str(np.count_nonzero(error_med)), factor, median, household_name, feed_name)
-        
+         
         error = error | error_med
         if np.count_nonzero(error) > 0:
             feed_fixed = feed[~error.astype(bool)]
 
         # Always begin with an energy value of 0
         feed_fixed -= feed_fixed.dropna().iloc[0,0]
-
-        if fixed.empty:
-            fixed = feed_fixed
-        else:
-            fixed = fixed.combine_first(feed_fixed)
-            
-        if output:
-            feed.columns = ["Energy [kWh]"]
-            feed_csv = pd.concat([feed, feed_power], axis=1)
-            feed_csv[feed_name+'_error_std'] = error_std.replace(False, np.NaN)
-            feed_csv[feed_name+'_error_inc'] = error_inc.replace(False, np.NaN)
-            feed_csv[feed_name+'_error_med'] = error_med.replace(False, np.NaN)
-            feed_csv.to_csv(household_name.lower()+'_'+feed_name+'.csv', sep=';', decimal=',', encoding='utf-8')
+        
+        feed.columns = [feed_name+"_energy"]
+        feed_power.columns = [feed_name+"_power"]
+        feeds_output = pd.concat([feeds_output, feed, feed_power], axis=1)
+        feeds_output[feed_name+'_error_std'] = error_std.replace(False, np.NaN)
+        feeds_output[feed_name+'_error_inc'] = error_inc.replace(False, np.NaN)
+        feeds_output[feed_name+'_error_med'] = error_med.replace(False, np.NaN)
+        
+        result = pd.concat([result, feed_fixed], axis=1)
 
         feeds_success += 1
         update_progress(feeds_success, feeds_existing)
 
-    fixed.columns.names = headers
+    result.columns.names = headers
 
-    return fixed
+    return result
 
 
 def _feed_adjustment(adjustment, feed):
