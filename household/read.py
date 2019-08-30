@@ -119,14 +119,14 @@ def read(household_name, dir_name, household_region, household_type, feeds, head
     # First, convert userinput to UTC time to conform with data_set.index
     if start_from_user:
         start_from_user = (
-            pytz.timezone('Europe/Brussels')
+            pytz.timezone('Europe/Berlin')
             .localize(datetime.combine(start_from_user, time()))
             .astimezone(pytz.timezone('UTC')))
         data_set = data_set.loc[data_set.index >= start_from_user]
         
     if end_from_user:
         end_from_user = (
-            pytz.timezone('Europe/Brussels')
+            pytz.timezone('Europe/Berlin')
             .localize(datetime.combine(end_from_user, time()))
             .astimezone(pytz.timezone('UTC')))
         data_set = data_set.loc[data_set.index <= end_from_user]

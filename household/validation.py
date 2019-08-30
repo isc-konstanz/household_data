@@ -15,6 +15,7 @@ import numpy as np
 import pandas as pd
 
 from .tools import update_progress, derive_power
+from anaconda_navigator.app import start
 
 
 logger = logging.getLogger('log')
@@ -57,7 +58,7 @@ def validate(df, household_name, feeds, headers, output=False):
     for feed_name, feed_dict in feeds.items():
         feed = df.loc[:, df.columns.get_level_values('feed')==feed_name].dropna()
 
-        # Take specific actions, depending on one-time occurrences for the specific feed
+        #Take specific actions, depending on one-time occurrences for the specific feed
         if 'adjustments' in feed_dict.keys():
             for adjustment in feed_dict['adjustments']:
                 logger.debug("Adjust energy values at %s for %s: %s", adjustment['start'], household_name, feed_name)
@@ -86,7 +87,7 @@ def validate(df, household_name, feeds, headers, output=False):
                     error_inc.iloc[i,0] = False
                     error_inc.iloc[i-1,0] = True
                     
-                elif feed_fixed.iloc[i-1,0] > feed_fixed.iloc[i+100,0]:
+                elif feed_fixed.iloc[i-1,0] > feed_fixed.iloc[min(feed_size-1,i+100),0]:
                     error_flag = feed_fixed.index[i]
                     
                 else:
@@ -131,11 +132,16 @@ def validate(df, household_name, feeds, headers, output=False):
         feeds_output[feed_name+'_error_std'] = error_std.replace(False, np.NaN)
         feeds_output[feed_name+'_error_inc'] = error_inc.replace(False, np.NaN)
         feeds_output[feed_name+'_error_med'] = error_med.replace(False, np.NaN)
-        
+        feeds_output.to_csv(household_name.lower()+'_'+feed_name+'.csv', sep=';', decimal=',', encoding='utf-8')
+
         result = pd.concat([result, feed_fixed], axis=1)
 
         feeds_success += 1
         update_progress(feeds_success, feeds_existing)
+
+    if output:
+        from household.visualization import _plot
+        _plot(feeds_output, df.columns.get_level_values('feed'), household_name)
 
     result.columns.names = headers
 

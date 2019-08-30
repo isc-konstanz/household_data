@@ -212,10 +212,10 @@ Residential 4:
         pv:
             id: 46
             unit: 'kWh'
-            adjustments:
-                - type: remove
-                  start: '2018-07-07 07:21:11'
-                  end: '2018-07-07 08:16:11'
+#            adjustments:
+#                - type: remove
+#                  start: '2018-07-07 07:21:11'
+#                  end: '2018-07-07 08:16:11'
         ev:
             id: 53
             unit: 'kWh'
@@ -302,6 +302,7 @@ Residential 5:
         - key: 3min
           seconds: 180
           start: '2015-10-26 11:05:56'
+          
         - key: 1min
           seconds: 60
 

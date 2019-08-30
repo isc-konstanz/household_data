@@ -60,7 +60,7 @@ def make_equidistant(df, household_name, resolution, interval, start, end, feeds
                 hour += 1
             feed_end = feed.index[-1].replace(hour=hour, minute=minute, second=0)
             
-            feed_index = pd.DatetimeIndex(start=feed_start, end=feed_end, freq=resolution)
+            feed_index = pd.date_range(start=feed_start, end=feed_end, freq=resolution)
             feed = feed.combine_first(pd.DataFrame(index=feed_index, columns=feed.columns))
             feed.index.name = 'timestamp'
             
@@ -82,7 +82,7 @@ def make_equidistant(df, household_name, resolution, interval, start, end, feeds
     
             feeds_success += 1
             update_progress(feeds_success, feeds_existing)
-
+    
     return equidistant
 
 
