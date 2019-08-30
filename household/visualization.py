@@ -47,18 +47,18 @@ def _plot(df, feed_columns, household_name):
         List of strings indicating the level names of the pandas.MultiIndex
         for the columns of the dataframe
     '''
-   
     import matplotlib.pyplot as plt
     from matplotlib.lines import Line2D
     from pandas.plotting import register_matplotlib_converters
     register_matplotlib_converters()
+    
     from IPython import get_ipython
     get_ipython().run_line_magic('matplotlib', 'inline')
     get_ipython().run_line_magic('matplotlib', 'qt')
     
     plt.close('all')
     plt.rcParams.update({'figure.max_open_warning': 0})
-    colors = plt.get_cmap('tab20').colors
+    colors = plt.get_cmap('tab20c').colors
     
     start = df.index[0]
     while start <= df.index[-1]:
