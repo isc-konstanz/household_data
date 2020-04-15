@@ -6,23 +6,19 @@ Household Datapackage
 read.py : read time series files
 
 """
-from datetime import datetime, time
 import logging
+logger = logging.getLogger(__name__)
+
 import os
-from struct import unpack
-
 import pytz
-
 import pandas as pd
 
+from struct import unpack
+from datetime import datetime, time
 from .tools import update_progress
 
 
-logger = logging.getLogger('log')
-logger.setLevel('INFO')
-
-
-def read(household_name, dir_name, household_region, household_type, feeds, headers, 
+def read(household_name, household_dir, household_region, household_type, feeds, headers, 
          start_from_user=None, end_from_user=None):
     """
     For the households specified in the households.yml file, read 
@@ -31,7 +27,7 @@ def read(household_name, dir_name, household_region, household_type, feeds, head
     ----------
     household_name : str
         Name of the Household to be placed in the column-MultiIndex
-    dir_name : str
+    household_dir : str
         directory path to the location of the Households MySQL data
     household_region : str
         Region of the Household to be placed in the column-MultiIndex
@@ -57,17 +53,17 @@ def read(household_name, dir_name, household_region, household_type, feeds, head
     columns_map = {}
 
     household_id = household_name.replace(' ', '').lower()
-    feeds_dir = os.path.join('original_data', dir_name, 'phptimeseries')
+    feeds_dir = os.path.join('original_data', household_dir, 'phptimeseries')
 
-    logger.info('Reading %s - feeds', household_name)
+    logger.info('Reading %s series', household_name)
 
     feeds_existing = len(feeds)
     feeds_success = 0
 
-    # Check if there is a feeds folder for dir_name
+    # Check if there is a feeds folder for household_dir
     if not os.path.exists(feeds_dir):
         logger.warning('Feeds directory not found for %s',
-                       dir_name)
+                       household_dir)
         return data_set
 
     # For each specified feed, read the MySQL file
@@ -83,11 +79,6 @@ def read(household_name, dir_name, household_region, household_type, feeds, head
                            ' empty and will thus be skipped from reading',
                            filepath)
         else:
-            logger.debug('Reading data:\n\t '
-                         'Household:   %s\n\t '
-                         'Feed: %s',
-                         household_name, feed_name)
-
             data_to_add = read_feed(filepath, feed_name)
 
             columns_map[feed_name] = {
@@ -102,7 +93,12 @@ def read(household_name, dir_name, household_region, household_type, feeds, head
                 data_set = data_to_add
             else:
                 data_set = data_set.combine_first(data_to_add)
-
+            
+            logger.debug('Read data series %s for %s from %s to %s',
+                         household_name, feed_name,
+                         data_to_add.index[0].strftime('%d.%m.%Y %H:%M'),
+                         data_to_add.index[-1].strftime('%d.%m.%Y %H:%M'))
+            
             feeds_success += 1
             update_progress(feeds_success, feeds_existing)
 
@@ -154,9 +150,9 @@ def read_feed(filepath, name):
     feed.index = feed.index.tz_localize(pytz.utc)
     feed.index.name = 'timestamp'
     feed = feed.loc[feed.index.year > 1970]
-
+    
     # Drop rows with duplicate index, as this produces problems with reindexing
     feed = feed[~feed.index.duplicated(keep='last')]
-
+    
     return feed
 

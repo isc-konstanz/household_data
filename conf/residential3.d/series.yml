@@ -1,0 +1,59 @@
+#
+# Open Power System Data
+#
+# Household Datapackage
+#
+# series.yml : Parameters specifying adjustments to data series
+#
+Adjustments:
+    pv:
+        - type: difference
+          start: '2017-03-24 10:41:41'
+        - type: difference
+          start: '2017-04-09 18:09:44'
+
+    circulation_pump:
+        - type: difference
+          start: '2015-10-10 05:00:27'
+
+    washing_machine:
+        - type: difference
+          start: '2016-08-26 20:11:31'
+        - type: difference
+          start: '2016-09-01 19:43:13'
+        - type: remove
+          start: '2016-10-30 00:03:08'
+          end: '2016-10-30 00:34:51'
+
+    dishwasher:
+        - type: difference
+          start: '2015-10-10 05:00:29'
+        - type: remove
+          start: '2016-11-22 13:12:11'
+          end: '2016-11-22 13:13:02'
+        - type: remove
+          start: '2016-11-22 15:00:56'
+          end: '2016-11-22 15:00:56'
+        - type: remove
+          start: '2017-02-20 20:12:54'
+          end: '2017-02-20 20:15:57'
+        - type: difference
+          start: '2017-03-05 13:11:21'
+
+    refrigerator:
+        - type: remove
+          end: '2014-12-11 18:01:41'
+        - type: difference
+          start: '2015-10-10 04:59:49'
+        - type: difference
+          start: '2016-08-26 20:11:31'
+        - type: difference
+          start: '2016-08-27 13:27:51'
+
+    freezer:
+        - type: difference
+          start: '2014-12-17 15:42:11'
+        - type: difference
+          start: '2016-08-26 20:11:33'
+        - type: difference
+          start: '2016-08-27 13:27:53'

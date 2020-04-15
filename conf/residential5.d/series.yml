@@ -1,0 +1,23 @@
+#
+# Open Power System Data
+#
+# Household Datapackage
+#
+# series.yml : Parameters specifying adjustments to data series
+#
+Adjustments:
+    washing_machine:
+        - type: difference
+          start: '2016-01-04 18:19:48'
+
+    refrigerator:
+        - type: difference
+          start: '2016-01-04 18:49:19'
+        - type: difference
+          start: '2017-02-18 09:02:12'
+        - type: difference
+          start: '2017-02-18 11:34:09'
+        - type: difference
+          start: '2017-02-18 11:55:07'
+        - type: difference
+          start: '2017-02-19 17:58:30'

@@ -1,0 +1,276 @@
+#
+# Open Power System Data
+#
+# Household Datapackage
+#
+# households.yml : Parameters specifying all households to be processed
+#
+Residential 1:
+    dir: 'DE_KN_residential_001'
+    region: 'DE_KN'
+    type: 'residential_building_suburb'
+    series:
+        grid_import:
+            id: 56
+            unit: 'kWh'
+        pv:
+            id: 59
+            unit: 'kWh'
+        heat_pump:
+            id: 62
+            unit: 'kWh'
+        washing_machine:
+            id: 65
+            unit: 'kWh'
+        dishwasher:
+            id: 74
+            unit: 'kWh'
+        freezer:
+            id: 69
+            unit: 'kWh'
+
+Residential 2:
+    dir: 'DE_KN_residential_002'
+    region: 'DE_KN'
+    type: 'residential_building_suburb'
+    series:
+        grid_import:
+            id: 25
+            unit: 'kWh'
+        circulation_pump:
+            id: 40
+            unit: 'kWh'
+        washing_machine:
+            id: 49
+            unit: 'kWh'
+        dishwasher:
+            id: 46
+            unit: 'kWh'
+        freezer:
+            id: 52
+            unit: 'kWh'
+
+Residential 3:
+    dir: 'DE_KN_residential_003'
+    region: 'DE_KN'
+    type: 'residential_building_urban'
+    series:
+        grid_import:
+            id: 138
+            unit: 'kWh'
+        grid_export:
+            id: 135
+            unit: 'kWh'
+        pv:
+            id: 141
+            unit: 'kWh'
+        circulation_pump:
+            id: 60
+            unit: 'kWh'
+        washing_machine:
+            id: 54
+            unit: 'kWh'
+        dishwasher:
+            id: 57
+            unit: 'kWh'
+        refrigerator:
+            id: 48
+            unit: 'kWh'
+        freezer:
+            id: 51
+            unit: 'kWh'
+
+Residential 4:
+    dir: 'DE_KN_residential_004'
+    region: 'DE_KN'
+    type: 'residential_building_urban'
+    series:
+        grid_import:
+            id: 43
+            unit: 'kWh'
+        grid_export:
+            id: 40
+            unit: 'kWh'
+        pv:
+            id: 46
+            unit: 'kWh'
+        ev:
+            id: 53
+            unit: 'kWh'
+        heat_pump:
+            id: 49
+            unit: 'kWh'
+        washing_machine:
+            id: 56
+            unit: 'kWh'
+        dishwasher:
+            id: 62
+            unit: 'kWh'
+        refrigerator:
+            id: 65
+            unit: 'kWh'
+        freezer:
+            id: 59
+            unit: 'kWh'
+
+Residential 5:
+    dir: 'DE_KN_residential_005'
+    region: 'DE_KN'
+    type: 'residential_apartment_urban'
+    series:
+        grid_import:
+            id: 40
+            unit: 'kWh'
+        washing_machine:
+            id: 47
+            unit: 'kWh'
+        dishwasher:
+            id: 51
+            unit: 'kWh'
+        refrigerator:
+            id: 43
+            unit: 'kWh'
+
+Residential 6:
+    dir: 'DE_KN_residential_006'
+    region: 'DE_KN'
+    type: 'residential_building_urban'
+    series:
+        grid_import:
+            id: 40
+            unit: 'kWh'
+        grid_export:
+            id: 62
+            unit: 'kWh'
+        pv:
+            id: 43
+            unit: 'kWh'
+        circulation_pump:
+            id: 46
+            unit: 'kWh'
+        washing_machine:
+            id: 53
+            unit: 'kWh'
+        dishwasher:
+            id: 49
+            unit: 'kWh'
+        freezer:
+            id: 57
+            unit: 'kWh'
+
+Public 1:
+    dir: 'DE_KN_public_001'
+    region: 'DE_KN'
+    type: 'school_building_urban'
+    series:
+        grid_import:
+            id: 40
+            unit: 'kWh'
+
+Public 2:
+    dir: 'DE_KN_public_002'
+    region: 'DE_KN'
+    type: 'school_building_urban'
+    series:
+        grid_import:
+            id: 40
+            unit: 'kWh'
+
+Industrial 1:
+    dir: 'DE_KN_industrial_001'
+    region: 'DE_KN'
+    type: 'industrial_building_warehouse'
+    series:
+        grid_import:
+            id: 25
+            unit: 'kWh'
+        pv_1:
+            id: 43
+            unit: 'kWh'
+        pv_2:
+            id: 46
+            unit: 'kWh'
+
+Industrial 2:
+    dir: 'DE_KN_industrial_002'
+    region: 'DE_KN'
+    type: 'industrial_building_craft'
+    series:
+        grid_import:
+            id: 25
+            unit: 'kWh'
+        pv:
+            id: 46
+            unit: 'kWh'
+        storage_charge:
+            id: 52
+            unit: 'kWh'
+        storage_decharge:
+            id: 55
+            unit: 'kWh'
+
+Industrial 3:
+    dir: 'DE_KN_industrial_003'
+    region: 'DE_KN'
+    type: 'industrial_building_institute'
+    series:
+        grid_import:
+            id: 25
+            unit: 'kWh'
+        pv_roof:
+            id: 43
+            unit: 'kWh'
+        pv_facade:
+            id: 46
+            unit: 'kWh'
+        ev:
+            id: 100
+            unit: 'kWh'
+        area_offices:
+            id: 49
+            unit: 'kWh'
+        area_room_1:
+            id: 64
+            unit: 'kWh'
+        area_room_2:
+            id: 67
+            unit: 'kWh'
+        area_room_3:
+            id: 85
+            unit: 'kWh'
+        area_room_4:
+            id: 88
+            unit: 'kWh'
+        ventilation:
+            id: 52
+            unit: 'kWh'
+        cooling_aggregate:
+            id: 55
+            unit: 'kWh'
+        compressor:
+            id: 58
+            unit: 'kWh'
+        cooling_pumps:
+            id: 61
+            unit: 'kWh'
+        machine_1:
+            id: 70
+            unit: 'kWh'
+        machine_2:
+            id: 73
+            unit: 'kWh'
+        machine_3:
+            id: 76
+            unit: 'kWh'
+        machine_4:
+            id: 79
+            unit: 'kWh'
+        machine_5:
+            id: 82
+            unit: 'kWh'
+        dishwasher:
+            id: 91
+            unit: 'kWh'
+        refrigerator:
+            id: 95
+            unit: 'kWh'

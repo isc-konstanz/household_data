@@ -7,14 +7,11 @@ download.py : download households sources
 
 """
 import logging
+logger = logging.getLogger(__name__)
+
 import os
 import zipfile
-
 import requests
-
-
-logger = logging.getLogger('log')
-logger.setLevel('INFO')
 
 
 def download(out_path, version=None):
@@ -53,7 +50,7 @@ def download(out_path, version=None):
     myzipfile = zipfile.ZipFile(filepath)
     if myzipfile.namelist()[0] == 'original_data/':
         myzipfile.extractall()
-        logger.info('Extracted data to %s.', os.path.join(out_path, 'original_data'))
+        logger.info('Extracted data to %s.', os.path.join(os.getcwd(), 'original_data'))
     else:
         logger.warning('%s has unexpected content. Please check manually',
                        filepath)

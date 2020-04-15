@@ -1,0 +1,55 @@
+#
+# Open Power System Data
+#
+# Household Datapackage
+#
+# series.yml : Parameters specifying adjustments to data series
+#
+Adjustments:
+    grid_import:
+        - type: remove
+          end: '2015-04-22 14:26:01'
+
+    pv:
+        - type: remove
+          end: '2015-04-22 14:26:14'
+
+    heat_pump:
+        - type: remove
+          end: '2015-04-22 14:26:29'
+
+    washing_machine:
+        - type: remove
+          end: '2015-05-21 17:04:19'
+        - type: difference
+          start: '2015-09-22 10:52:16'
+        - type: difference
+          start: '2015-11-26 04:45:39'
+        - type: difference
+          start: '2016-07-11 06:03:56'
+        - type: difference
+          start: '2016-11-16 14:02:15'
+        - type: difference
+          start: '2017-02-14 11:19:43'
+
+    dishwasher:
+        - type: remove
+          end: '2015-05-21 17:04:26'
+        - type: difference
+          start: '2015-11-26 04:45:37'
+        - type: difference
+          start: '2016-07-11 06:04:34'
+        - type: difference
+          start: '2017-02-14 12:26:58'
+
+    freezer:
+        - type: remove
+          end: '2015-09-19 18:02:31'
+        - type: difference
+          start: '2015-11-26 04:45:38'
+        - type: difference
+          start: '2016-07-11 06:04:41'
+        - type: difference
+          start: '2016-08-31 19:25:18'
+        - type: difference
+          start: '2017-02-14 12:27:05'

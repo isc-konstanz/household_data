@@ -20,17 +20,16 @@ name: opsd_household_data
 description: Detailed household load and solar generation in minutely to hourly resolution
 
 long_description: This data package contains measured time series data for several small businesses 
-    and private households relevant for household- or low-voltage-level power system modeling. 
+    and residential households relevant for household- or low-voltage-level power system modeling. 
     The data includes solar power generation as well as electricity consumption (load) in a resolution 
     up to single device consumption. The starting point for the time series, as well as data quality, 
-    varies between households, with gaps spanning from a few minutes to entire hours. In general, 
-    data is adjusted to fit uniform, regular time intervals without changing its validity.  Except for small 
-    gaps, filled using linear interpolation. The numbers are cumulative power consumption/generation over time. 
-    Hence overall energy consumption/generation is retained in case of data gaps. Measurements were initially 
-    conducted in 3-minute intervals, later in 1-minute intervals. Data for both measurement resolutions are 
-    published separately in large CSV files. Additionally, data in 15 and 60-minute resolution is provided 
-    for compatibility with other time series data. Data processing is conducted in 
-    Jupyter Notebooks/Python/pandas.
+    varies between households, with gaps spanning from a few minutes to entire days. 
+    All measurement devices provided cumulative energy consumption/generation over time. Hence overall energy 
+    consumption/generation is retained, in case of data gaps due to communication problems. Measurements were 
+    conducted 1-minute intervals, with all data made available in an interpolated, uniform and regular time 
+    interval. All data gaps are either interpolated linearly, or filled with data of prior days. Additionally, 
+    data in 15 and 60-minute resolution is provided for compatibility with other time series data.
+    Data processing is conducted in Jupyter Notebooks/Python/pandas.
 
 documentation:
     https://github.com/isc-konstanz/household_data/blob/{version}/main.ipynb
@@ -153,7 +152,7 @@ ev: Electric Vehicle charging energy in a {type} in {unit}
 storage_charge: Battery charging energy in a {type} in {unit}
 storage_discharge: Battery discharged energy in a {type} in {unit}
 heat_pump: Heat pump energy consumption in a {type} in {unit}
-heating: Heating energy consumption in a {type} in {unit}
+heating_rod: Heating rod energy consumption in a {type} in {unit}
 circulation_pump: Circulation pump energy consumption in a {type} in {unit}
 air_conditioning: Air conditioning energy consumption in a {type} in {unit}
 ventilation: Ventilation energy consumption in a {type} in {unit}
@@ -164,7 +163,7 @@ freezer: Freezer energy consumption in a {type} in {unit}
 cooling_aggregate: Cooling aggregate energy consumption in a {type} in {unit}
 compressor: Compressor energy consumption in a {type} in {unit}
 cooling_pumps: Cooling pumps energy consumption in a {type} in {unit}
-facility: Energy consumption of an industrial- or research-facility in a {type} in {unit}
+machine: Energy consumption of an industrial- or research-machine in a {type} in {unit}
 area: Energy consumption of an area, consisting of several smaller loads, in a {type} in {unit}
 default: Energy in {unit}
 '''

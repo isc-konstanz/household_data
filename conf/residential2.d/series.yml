@@ -1,0 +1,78 @@
+#
+# Open Power System Data
+#
+# Household Datapackage
+#
+# series.yml : Parameters specifying adjustments to data series
+#
+Adjustments:
+    washing_machine:
+        - type: difference
+          start: '2015-04-25 08:00:03'
+        - type: difference
+          start: '2015-11-26 04:45:42'
+        - type: difference
+          start: '2017-01-11 09:01:13'
+        - type: difference
+          start: '2017-01-25 11:26:44'
+        - type: difference
+          start: '2017-02-01 16:08:16'
+        - type: remove
+          start: '2017-02-14 11:22:13'
+          end: '2017-02-14 12:05:20'
+        - type: difference
+          start: '2017-02-14 12:07:50'
+        - type: difference
+          start: '2017-02-15 07:31:37'
+        - type: difference
+          start: '2017-02-23 07:09:04'
+        - type: difference
+          start: '2017-02-27 09:33:59'
+
+    dishwasher:
+        - type: remove
+          start: '2015-05-20 18:43:32'
+          end: '2015-05-21 04:46:06'
+        - type: remove
+          start: '2015-05-21 17:15:29'
+          end: '2015-05-21 18:53:38'
+        - type: difference
+          start: '2015-11-26 04:45:39'
+        - type: difference
+          start: '2017-02-01 15:46:31'
+        - type: difference
+          start: '2017-02-03 05:35:05'
+        - type: difference
+          start: '2017-02-03 18:06:52'
+        - type: difference
+          start: '2017-02-06 13:44:01'
+        - type: difference
+          start: '2017-02-14 12:07:53'
+        - type: difference
+          start: '2017-02-15 11:58:07'
+        - type: difference
+          start: '2017-02-23 07:08:45'
+
+    freezer:
+        - type: difference
+          start: '2015-09-22 16:44:56'
+        - type: difference
+          start: '2015-11-26 04:45:39'
+        - type: difference
+          start: '2016-05-07 17:13:19'
+        - type: difference
+          start: '2016-06-09 16:57:02'
+
+    heating:
+        - type: difference
+          start: '2016-08-19 07:17:27'
+        - type: difference
+          start: '2016-09-03 11:16:50'
+        - type: difference
+          start: '2016-11-25 05:59:46'
+        - type: difference
+          start: '2017-01-16 15:01:58'
+        - type: difference
+          start: '2017-01-18 14:17:34'
+        - type: difference
+          start: '2017-02-01 15:46:35'

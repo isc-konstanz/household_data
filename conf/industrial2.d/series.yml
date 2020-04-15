@@ -1,0 +1,11 @@
+#
+# Open Power System Data
+#
+# Household Datapackage
+#
+# series.yml : Parameters specifying adjustments to data series
+#
+Adjustments:
+    grid_import:
+        - type: remove
+          end: '2016-02-22 00:58:00'

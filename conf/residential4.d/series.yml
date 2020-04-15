@@ -1,0 +1,121 @@
+#
+# Open Power System Data
+#
+# Household Datapackage
+#
+# series.yml : Parameters specifying adjustments to data series
+#
+Adjustments:
+    grid_import:
+        - type: remove
+          end: '2015-10-04 08:52:58'
+        - type: fill
+          start: '2015-10-11 08:52:28'
+          end: '2015-10-11 10:08:34'
+          from: after
+          hours: 48
+        - type: remove
+          start: '2017-01-22 14:02:30'
+          end: '2017-01-22 14:02:58'
+        #- type: remove
+        #  start: '2019-01-21 14:04:23'
+        #  end: '2019-01-21 14:55:23'
+        #- type: remove
+        #  start: '2019-01-21 15:19:23'
+        #  end: '2019-01-21 15:22:23'
+        #- type: difference
+        #  start: '2019-01-22 17:18:03'
+        #- type: difference
+        #  start: '2019-01-28 10:37:03'
+        #- type: remove
+        #  start: '2019-05-09 00:18:02'
+        #  end: '2019-05-09 00:21:02'
+
+    grid_export:
+        - type: remove
+          end: '2015-10-04 08:52:58'
+        - type: fill
+          start: '2015-10-11 08:52:28'
+          end: '2015-10-11 10:08:34'
+          from: after
+          hours: 48
+        #- type: difference
+        #  start: '2018-07-07 07:21:22'
+        #- type: remove
+        #  start: '2019-06-06 17:19:02'
+        #  end: '2019-06-06 17:21:02'
+        #- type: difference
+        #  start: '2019-06-08 08:22:02'
+        #- type: difference
+        #  start: '2019-06-08 14:55:02'
+        #- type: difference
+        #  start: '2019-06-11 04:22:02'
+        #- type: difference
+        #  start: '2019-06-11 04:24:02'
+        #- type: difference
+        #  start: '2019-06-11 13:17:03'
+        #- type: remove
+        #  start: '2019-07-02 16:19:02'
+        #  end: '2019-07-02 16:21:02'
+        #- type: remove
+        #  start: '2019-07-06 03:35:03'
+        #  end: '2019-08-04 21:18:02'
+        #- type: remove
+        #  start: '2019-08-08 05:19:02'
+        #  end: '2019-08-08 05:20:03'
+
+    pv:
+        - type: remove
+          end: '2015-10-04 09:08:02'
+        - type: fill
+          start: '2015-10-11 08:55:52'
+          end: '2015-10-11 10:08:44'
+          from: after
+          hours: 48
+        #- type: remove
+        #  start: '2018-07-07 07:21:11'
+        #  end: '2018-07-07 08:16:11'
+        #- type: remove
+        #  start: '2019-01-21 13:48:12'
+        #  end: '2019-01-21 15:22:13'
+        #- type: difference
+        #  start: '2019-08-16 15:57:23'
+
+    heat_pump:
+        - type: remove
+          end: '2015-10-04 09:05:24'
+        - type: fill
+          start: '2015-10-11 08:56:03'
+          end: '2015-10-11 10:08:55'
+          from: after
+          hours: 48
+
+    dishwasher:
+        - type: remove
+          start: '2015-12-03 11:41:10'
+          end: '2015-12-03 17:41:10'
+        - type: difference
+          start: '2017-01-15 14:20:45'
+        - type: difference
+          start: '2017-02-14 12:08:00'
+
+    refrigerator:
+        - type: remove
+          start: '2015-10-25 01:00:16'
+          end: '2015-10-25 01:47:47'
+        - type: difference
+          start: '2015-11-2 20:01:49'
+        - type: difference
+          start: '2015-11-26 10:34:12'
+        - type: difference
+          start: '2015-11-26 17:21:06'
+        - type: remove
+          start: '2015-12-03 11:37:35'
+          end: '2015-12-04 11:19:12'
+        - type: remove
+          start: '2016-10-30 01:11:26'
+          end: '2016-10-30 01:57:35'
+        - type: difference
+          start: '2016-05-11 18:32:33'
+        - type: difference
+          start: '2017-01-04 19:50:14'

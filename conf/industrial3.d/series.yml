@@ -1,0 +1,101 @@
+#
+# Open Power System Data
+#
+# Household Datapackage
+#
+# series.yml : Parameters specifying adjustments to data series
+#
+Adjustments:
+    area_offices:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    area_room_1:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    area_room_2:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    area_room_3:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    area_room_4:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    compressor:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    cooling_aggregate:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    cooling_pumps:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    machine_1:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    machine_2:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    machine_3:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    machine_4:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    machine_5:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    pv_facade:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    pv_roof:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    ventilation:
+        - type: remove
+          end: '2015-10-15 13:16:00'
+
+    dishwasher:
+        - type: difference
+          start: '2015-11-26 04:45:40'
+        - type: difference
+          start: '2016-02-11 15:38:04'
+        - type: remove
+          start: '2016-05-19 09:59:40'
+          end: '2016-06-17 09:02:16'
+        - type: difference
+          start: '2016-08-18 10:48:41'
+        - type: difference
+          start: '2017-02-14 12:08:00'
+
+    refrigerator:
+        - type: difference
+          start: '2015-11-26 04:48:31'
+        - type: difference
+          start: '2015-12-04 11:20:08'
+        - type: difference
+          start: '2016-02-11 15:36:52'
+        - type: difference
+          start: '2016-09-07 10:46:09'
+        - type: remove
+          start: '2016-09-07 10:46:09'
+          end: '2016-09-07 14:51:41'
+        - type: difference
+          start: '2016-11-30 09:25:42'
+        - type: difference
+          start: '2017-02-14 12:08:00'

@@ -6,40 +6,47 @@ Household Datapackage
 visualization.py : plot energy and power values to visually validate data series.
 
 """
+import logging
+logger = logging.getLogger(__name__)
+
+import numpy as np
 import pandas as pd
 
-from .tools import derive_power
+import datetime as dt
+from household.tools import derive_power
 
-def visualize(df):
-    
-    for household_name in df.columns.get_level_values('household').drop_duplicates().drop(''):
-        household_data = df.loc[:,(df.columns.get_level_values('household') == household_name)]
+
+def visualize(data):
+    for household_name in data.columns.get_level_values('household').drop_duplicates().drop(''):
+        household_data = data.loc[:,(data.columns.get_level_values('household') == household_name)]
         
-        feeds_output = pd.DataFrame()
-        feed_columns = household_data.columns.get_level_values('feed')
-        for feed_name in feed_columns:
-            feed = household_data.loc[:,(household_data.columns.get_level_values('feed') == feed_name)]
+        feeds_data = pd.DataFrame()
+        feeds_columns = household_data.columns.get_level_values('feed')
+        for feed_name in feeds_columns:
+            feed = household_data.loc[:,(household_data.columns.get_level_values('feed') == feed_name)].dropna()
             if feed.empty:
                 continue
             
             feed.columns = [feed_name+"_energy"]
             feed_power = derive_power(feed)
             feed_power.columns = [feed_name+"_power"]
-            feeds_output = pd.concat([feeds_output, feed, feed_power], axis=1)
+            feeds_data = pd.concat([feeds_data, feed, feed_power], axis=1)
+            feeds_data.loc[:, feed_name+"_interpolated"] = data.loc[:, 'interpolated']\
+                                                               .apply(lambda x: True if isinstance(x, str) and feed_name in x else np.NaN)
         
-        _plot(feeds_output, feed_columns, household_name)
+        plot(feeds_data, feeds_columns, household_name)
 
 
-def _plot(df, feed_columns, household_name):
+def plot(feeds_data, feeds_columns, household_name, days=7):
     ''' 
     Plot energy and power values to visually validate data series
     
     Parameters
     ----------
-    df : pandas.DataFrame
+    feeds_data : pandas.DataFrame
         DataFrame to inspect and possibly fix measurement errors
-    feed_columns : dict of int
-        Subset of feed ids, available for the Household
+    feeds_columns : dict of str
+        Subset of feed columns available for the Household
     household_name : str
         Name of the Household to indicate progress
         on the households history and error susceptibility, if necessary
@@ -49,6 +56,7 @@ def _plot(df, feed_columns, household_name):
     '''
     import matplotlib.pyplot as plt
     from matplotlib.lines import Line2D
+    from matplotlib.dates import DateFormatter
     from pandas.plotting import register_matplotlib_converters
     register_matplotlib_converters()
     
@@ -58,54 +66,72 @@ def _plot(df, feed_columns, household_name):
     
     plt.close('all')
     plt.rcParams.update({'figure.max_open_warning': 0})
+    
     colors = plt.get_cmap('tab20c').colors
     
-    start = df.index[0]
-    while start <= df.index[-1]:
-        end = start + pd.Timedelta(weeks=1)
-        if end >= df.index[-1]:
-            data = df[start:]
+    start = feeds_data.index[0]
+    while start <= feeds_data.index[-1]:
+        end = start + dt.timedelta(days=days)
+        if end >= feeds_data.index[-1]:
+            data = feeds_data[start:]
         else:
-            data = df[start:end]
+            data = feeds_data[start:end]
         
-        if data.empty or ('_error_' in data.columns and data.filter(regex=("_error_")).dropna(how='all').empty):
+        errors = any('_error_' in column for column in data.columns) \
+                 and data.filter(regex=("_error_")).dropna(how='all').empty
+        
+        if data.empty or errors:
+            if data.empty:
+                logger.warning('Skipping empty interval at index %s for %s', start.strftime('%d.%m.%Y %H:%M'), household_name)
+            #else:
+            #logger.debug('Skipping visualization for expected behaviour at index %s for %s', start.strftime('%d.%m.%Y %H:%M'), household_name)
             start = end
             continue
         
-        _, ax1 = plt.subplots()
-        plt.title(household_name)
+        fig, ax = plt.subplots(nrows=2)
+        fig.autofmt_xdate()
         
         manager = plt.get_current_fig_manager()
         manager.window.showMaximized()
-        ax2 = ax1.twinx()
+        
         legend = []
         legend_names = []
         colors_counter = 0
-        for feed_name in feed_columns:
+        for feed_name in feeds_columns:
             feed = data.filter(regex=(feed_name)).dropna(how='all')
             feed.index = feed.index.tz_convert('Europe/Berlin')
-            if feed.empty:
+            
+            feed_power = feed[feed_name+'_power'].dropna()
+            if feed_power.empty:
                 continue
             
-            power = feed[feed_name+'_power'].dropna()
-            ax1.plot(power.index, power, color=colors[colors_counter], label=feed_name)
-            ax1.set_ylabel('Power')
-            energy = feed[feed_name+'_energy'] - feed.loc[feed.index[0], feed_name+'_energy']
-            ax2.set_ylabel('Energy')
-            ax2.plot(energy.index, energy, color=colors[colors_counter], linestyle='--')
+            ax[0].plot(feed_power.index, feed_power, color=colors[colors_counter], label=feed_name)
+            ax[0].xaxis.set_major_formatter(DateFormatter('%Y-%m-%d %H:%M:%S'))
+            ax[0].set_ylabel('Power')
             
-            if '_error_' in feed.columns:
-                ax1.plot(feed.index, feed[feed_name+'_error_std'].replace(True, -0.1), color=colors[colors_counter], marker='o', linestyle='None')
-                ax1.plot(feed.index, feed[feed_name+'_error_inc'].replace(True, -0.1), color=colors[colors_counter], marker='x', linestyle='None')
-                ax1.plot(feed.index, feed[feed_name+'_error_med'].replace(True, -0.1), color=colors[colors_counter], marker='^', linestyle='None')
+            energy = feed[feed_name+'_energy'] - feed.loc[feed.index[0], feed_name+'_energy']
+            ax[1].plot(feed.index, energy, color=colors[colors_counter]) #, linestyle='--')
+            ax[1].xaxis.set_major_formatter(DateFormatter('%Y-%m-%d %H:%M:%S'))
+            ax[1].set_ylabel('Energy')
+            
+            if errors:
+                ax[1].plot(feed.index, feed[feed_name+'_error_std'].replace(True, -1), color=colors[colors_counter], marker='o', linestyle='None')
+                ax[1].plot(feed.index, feed[feed_name+'_error_inc'].replace(True, -1), color=colors[colors_counter], marker='x', linestyle='None')
+                ax[0].plot(feed.index, feed[feed_name+'_error_qnt'].replace(True, -.1), color=colors[colors_counter], marker='x', linestyle='None')
+            
+            if any('_interpolated' in column for column in data.columns):
+                ax[1].plot(feed.index, feed[feed_name+'_interpolated'].replace(True, -1), color=colors[colors_counter], marker='o', linestyle='None')
             
             legend.append(Line2D([0], [0], color=colors[colors_counter]))
             legend_names.append(feed_name)
-            ax1.legend(legend, legend_names,loc= 'best')
             
             colors_counter += 2
             if colors_counter == 20:
                 colors_counter = 1
-            
+        
+        ax[0].legend(legend, legend_names, loc='best')
+        ax[0].title.set_text(household_name)
+        
         start = end
-
+        
+    plt.show()
